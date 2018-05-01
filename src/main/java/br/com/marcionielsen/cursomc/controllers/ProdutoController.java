@@ -10,44 +10,45 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
-import br.com.marcionielsen.cursomc.domain.Categoria;
-import br.com.marcionielsen.cursomc.services.CategoriaService;
+import br.com.marcionielsen.cursomc.domain.Produto;
+import br.com.marcionielsen.cursomc.services.ProdutoService;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoriaController implements IGenericaController<Categoria> {
+@RequestMapping(value = "/produtos")
+public class ProdutoController implements IGenericaController<Produto> {
 
 	@Autowired
-	private CategoriaService categoriaService;
+	private ProdutoService produtoService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 
-		Categoria categoria = categoriaService.findById(id);
-		return ResponseEntity.ok().body(categoria);
+		Produto produto = produtoService.findById(id);
+		return ResponseEntity.ok().body(produto);
 	}
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<?> listAll() {
 
-		List<Categoria> lista = categoriaService.listAll();
+		List<Produto> lista = produtoService.listAll();
 		return ResponseEntity.ok().body(lista);
 	}
 
 	@Override
-	public Categoria inserir(Categoria obj) {
+	public Produto inserir(Produto obj) {
 		return null;
 	}
 
 	@Override
-	public Categoria editar(Categoria obj) {
+	public Produto editar(Produto obj) {
 		return null;
 	}
 
 	@Override
 	public void excluir(Long id) {
+
 	}
 
 }
