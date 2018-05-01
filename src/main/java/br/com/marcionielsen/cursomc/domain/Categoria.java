@@ -2,10 +2,25 @@ package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "CATEGORIAS", indexes = { @Index(name = "UK_DS_CATEG", columnList = "DS_CATEGORIA", unique = true) })
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name = "CD_CATEGORIA")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "DS_CATEGORIA", nullable = false)
 	private String nome;
 
 	public Categoria() {
@@ -68,5 +83,4 @@ public class Categoria implements Serializable {
 	public String toString() {
 		return "Categoria [id=" + id + ", nome=" + nome + "]";
 	}
-
 }
