@@ -8,25 +8,27 @@ import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Categoria;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICategoriaRepository;
+import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
 public class CategoriaService implements IGenericaService<Categoria> {
 
 	@Autowired
-	private ICategoriaRepository  repo;
-	
+	private ICategoriaRepository repo;
+
 	@Override
 	public Categoria findById(Long id) {
 		Optional<Categoria> categoria = repo.findById(id);
-		
-		return categoria.orElse(null);
+
+		return categoria.orElseThrow(() -> new ObjetoNaoEncontradoException(
+				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Categoria.class.getName() + ")") );
 	}
 
 	@Override
 	public List<Categoria> listAll() {
 		List<Categoria> listaCategorias = repo.findAll();
-		
+
 		return listaCategorias;
 	}
 
@@ -42,12 +44,7 @@ public class CategoriaService implements IGenericaService<Categoria> {
 
 	@Override
 	public void excluir(Long id) {
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
 }
