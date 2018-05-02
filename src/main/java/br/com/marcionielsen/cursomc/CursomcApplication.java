@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.marcionielsen.cursomc.domain.Categoria;
+import br.com.marcionielsen.cursomc.domain.Cidade;
+import br.com.marcionielsen.cursomc.domain.Estado;
 import br.com.marcionielsen.cursomc.domain.Produto;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICategoriaRepository;
+import br.com.marcionielsen.cursomc.repositories.interfaces.ICidadeRepository;
+import br.com.marcionielsen.cursomc.repositories.interfaces.IEstadoRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private IProdutoRepository prodtRepo;
+
+	@Autowired
+	private IEstadoRepository estadoRepo;
+
+	@Autowired
+	private ICidadeRepository cidadeRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -44,6 +54,32 @@ public class CursomcApplication implements CommandLineRunner {
 		Produto p8 = new Produto(null, "Sabão Liquido", 35.00);
 		Produto p9 = new Produto(null, "Pano de Chão", 3.50);
 
+		Estado e1 = new Estado(null, "Espirito Santo", "ES");
+		Estado e2 = new Estado(null, "Rio de Janeiro", "RJ");
+		Estado e3 = new Estado(null, "Minas Gerais", "MG");
+		Estado e4 = new Estado(null, "São Paulo", "SP");
+
+		Cidade c1 = new Cidade(null, "Vila Velha", e1);
+		Cidade c2 = new Cidade(null, "Vitória", e1);
+		Cidade c3 = new Cidade(null, "Guarapari", e1);
+
+		Cidade c4 = new Cidade(null, "Rio de Janeiro", e2);
+		Cidade c5 = new Cidade(null, "Niteroi", e2);
+		Cidade c6 = new Cidade(null, "Campos dos Goytacazes", e2);
+
+		Cidade c7 = new Cidade(null, "Belo Horizonte", e3);
+		Cidade c8 = new Cidade(null, "Governador Valadares", e3);
+		Cidade c9 = new Cidade(null, "Resplendor", e3);
+
+		Cidade c10 = new Cidade(null, "São Paulo", e4);
+		Cidade c11 = new Cidade(null, "Campinas", e4);
+		Cidade c12 = new Cidade(null, "Ribeirão Preto", e4);
+
+		e1.getCidades().addAll(Arrays.asList(c1, c2, c3));
+		e2.getCidades().addAll(Arrays.asList(c4, c5, c6));
+		e3.getCidades().addAll(Arrays.asList(c7, c8, c9));
+		e4.getCidades().addAll(Arrays.asList(c10, c11, c12));
+
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2, p4, p5, p6));
 		cat3.getProdutos().addAll(Arrays.asList(p7, p8, p9));
@@ -60,8 +96,10 @@ public class CursomcApplication implements CommandLineRunner {
 		p8.getCategorias().addAll(Arrays.asList(cat3));
 		p9.getCategorias().addAll(Arrays.asList(cat3));
 
+		estadoRepo.saveAll(Arrays.asList(e1, e2, e3, e4));
+		cidadeRepo.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
+		
 		categRepo.saveAll(Arrays.asList(cat1, cat2, cat3));
-
 		prodtRepo.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9));
 	}
 
