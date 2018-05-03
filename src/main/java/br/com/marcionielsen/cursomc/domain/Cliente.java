@@ -6,20 +6,53 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
 
+@Entity
+@Table(name="CLIENTES", 
+       indexes = { @Index(name = "UK_NM_CLIENTE", columnList = "NM_CLIENTE", unique = true),
+		@Index(name = "UK_CD_CPF_CNPJ_CLIENTE", columnList = "CD_CPF_CNPJ_CLIENTE", unique = true),
+		@Index(name = "IDX_NM_CLIENTE", columnList = "NM_CLIENTE", unique = false),
+		@Index(name = "IDX_CD_CPF_CNPJ_CLIENTE", columnList = "CD_CPF_CNPJ_CLIENTE", unique = false) })
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name="CD_CLIENTE")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "NM_CLIENTE", nullable = false)
 	private String nome;
+	
+	@Column(name = "DS_EMAIL_CLIENTE", nullable = true)
 	private String email;
+	
+	@Column(name = "CD_CPF_CNPJ_CLIENTE", nullable = false)
 	private String cpfCnpj;
 
+	@Column(name = "CD_TIPO_PESSOA", nullable = false)
 	private Integer tipo;
 
+	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 
+	@ElementCollection
+	@CollectionTable(name="TELEFONES", joinColumns = @JoinColumn(name = "CD_CLIENTE", referencedColumnName="CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), 
+	           foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE") )
 	private Set<String> telefones = new HashSet<>();
 
 	public Cliente() {

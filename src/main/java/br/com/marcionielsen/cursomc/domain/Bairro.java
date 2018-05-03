@@ -1,8 +1,6 @@
 package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,38 +11,34 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CIDADES", indexes = { @Index(name = "IDX_NM_CIDADE", columnList = "NM_CIDADE", unique = false) })
-public class Cidade implements Serializable {
+@Table(name="BAIRROS", indexes = { @Index(name = "IDX_NM_BAIRRO", columnList = "NM_BAIRRO", unique = false) })
+public class Bairro implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "CD_CIDADE")
+	@Column(name = "CD_BAIRRO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "NM_CIDADE", nullable = false)
+	
+	@Column(name="NM_BAIRRO", nullable = false)
 	private String nome;
 
-	@OneToMany(mappedBy="cidade")
-	private List<Bairro> bairros = new ArrayList<>();
-	
 	@ManyToOne
-	@JoinColumn(name = "CD_ESTADO", nullable = false, referencedColumnName = "CD_ESTADO", foreignKey = @ForeignKey(name = "FK_CD_ESTADO"))
-	private Estado estado;
+	@JoinColumn(name = "CD_CIDADE", nullable = false, referencedColumnName = "CD_CIDADE", foreignKey = @ForeignKey(name = "FK_BAIRROS_CD_CIDADE"))
+	private Cidade cidade;
 
-	public Cidade() {
+	public Bairro() {
 		super();
 	}
 
-	public Cidade(Long id, String nome, Estado estado) {
+	public Bairro(Long id, String nome, Cidade cidade) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.estado = estado;
+		this.cidade = cidade;
 	}
 
 	public Long getId() {
@@ -63,20 +57,12 @@ public class Cidade implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Bairro> getBairros() {
-		return bairros;
+	public Cidade getCidade() {
+		return cidade;
 	}
 
-	public void setBairros(List<Bairro> bairros) {
-		this.bairros = bairros;
-	}
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 	@Override
@@ -95,10 +81,10 @@ public class Cidade implements Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Cidade)) {
+		if (!(obj instanceof Bairro)) {
 			return false;
 		}
-		Cidade other = (Cidade) obj;
+		Bairro other = (Bairro) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -111,7 +97,7 @@ public class Cidade implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Cidade [id=" + id + ", nome=" + nome + ", estado=" + estado + ", bairros=" + bairros + "]";
+		return "Bairro [id=" + id + ", nome=" + nome + ", cidade=" + cidade + "]";
 	}
 
 }

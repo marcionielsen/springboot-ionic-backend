@@ -2,33 +2,62 @@ package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ENDERECOS", 
+       indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
+                   @Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP", unique = true) })
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name = "CD_ENDERECO")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "NM_LOGRADOURO", nullable=false)
 	private String logradouro;
+	
+	@Column(name = "NM_ENDERECO", nullable=false)
 	private String numero;
+	
+	@Column(name = "DS_COMPLEMENTO", nullable=true)
 	private String complemento;
-	private String bairro;
+	
+	@Column(name = "CD_CEP", length=10, nullable=false)
 	private String cep;
 	
-	private Cidade cidade;
+	@ManyToOne
+	@JoinColumn(name = "CD_BAIRRO", nullable = false, referencedColumnName = "CD_BAIRRO", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_BAIRRO"))
+	private Bairro bairro;
+	
+	@ManyToOne
+	@JoinColumn(name = "CD_CLIENTE", nullable = false, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
 	private Cliente cliente;
 
 	public Endereco() {
 		super();
 	}
 
-	public Endereco(Long id, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade,
+	public Endereco(Long id, String logradouro, String numero, String complemento, String cep, Bairro bairro,
 			Cliente cliente) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.complemento = complemento;
-		this.bairro = bairro;
 		this.cep = cep;
-		this.cidade = cidade;
+		this.bairro = bairro;
 		this.cliente = cliente;
 	}
 
@@ -64,11 +93,11 @@ public class Endereco implements Serializable {
 		this.complemento = complemento;
 	}
 
-	public String getBairro() {
+	public Bairro getBairro() {
 		return bairro;
 	}
 
-	public void setBairro(String bairro) {
+	public void setBairro(Bairro bairro) {
 		this.bairro = bairro;
 	}
 
@@ -80,14 +109,6 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Cidade getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
-	}
-	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -129,7 +150,7 @@ public class Endereco implements Serializable {
 	@Override
 	public String toString() {
 		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
-				+ complemento + ", bairro=" + bairro + ", cep=" + cep + ", cidade=" + cidade + ", cliente=" + cliente + "]";
+				+ complemento + ", cep=" + cep + ", bairro=" + bairro + ", cliente=" + cliente + "]";
 	}
 
 }
