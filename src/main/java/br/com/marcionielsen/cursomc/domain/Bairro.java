@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="BAIRROS", indexes = { @Index(name = "IDX_NM_BAIRRO", columnList = "NM_BAIRRO", unique = false) })
 public class Bairro implements Serializable {
@@ -26,6 +28,7 @@ public class Bairro implements Serializable {
 	@Column(name="NM_BAIRRO", nullable = false)
 	private String nome;
 
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "CD_CIDADE", nullable = false, referencedColumnName = "CD_CIDADE", foreignKey = @ForeignKey(name = "FK_BAIRROS_CD_CIDADE"))
 	private Cidade cidade;

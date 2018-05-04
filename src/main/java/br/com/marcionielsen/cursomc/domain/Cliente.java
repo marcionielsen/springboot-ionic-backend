@@ -19,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -47,11 +49,12 @@ public class Cliente implements Serializable {
 	@Column(name = "CD_TIPO_PESSOA", nullable = false)
 	private Integer tipo;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name="TELEFONES", joinColumns = @JoinColumn(name = "CD_CLIENTE", referencedColumnName="CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), 
+	@CollectionTable(name="TELEFONES_CLIENTE", joinColumns = @JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName="CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), 
 	           foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE") )
 	private Set<String> telefones = new HashSet<>();
 

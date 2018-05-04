@@ -13,10 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table(name = "ENDERECOS", 
-       indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
-                   @Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP", unique = true) })
+@Table(name = "ENDERECOS", indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
+		@Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP", unique = true) })
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,33 +25,39 @@ public class Endereco implements Serializable {
 	@Column(name = "CD_ENDERECO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name = "NM_LOGRADOURO", nullable=false)
+
+	@Column(name = "NM_LOGRADOURO", nullable = false)
 	private String logradouro;
-	
-	@Column(name = "NM_ENDERECO", nullable=false)
+
+	@Column(name = "NM_ENDERECO", nullable = false)
 	private String numero;
-	
-	@Column(name = "DS_COMPLEMENTO", nullable=true)
+
+	@Column(name = "DS_COMPLEMENTO", nullable = true)
 	private String complemento;
-	
-	@Column(name = "CD_CEP", length=10, nullable=false)
+
+	@Column(name = "CD_CEP", length = 10, nullable = false)
 	private String cep;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "CD_BAIRRO", nullable = false, referencedColumnName = "CD_BAIRRO", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_BAIRRO"))
 	private Bairro bairro;
-	
+
+	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "CD_CLIENTE", nullable = false, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
+	@JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
 	private Cliente cliente;
+
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "CD_FORNECEDOR", nullable = true, referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_FORNECEDOR"))
+	private Fornecedor fornecedor;
 
 	public Endereco() {
 		super();
 	}
 
 	public Endereco(Long id, String logradouro, String numero, String complemento, String cep, Bairro bairro,
-			Cliente cliente) {
+			Cliente cliente, Fornecedor fornecedor) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -59,6 +66,7 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 		this.bairro = bairro;
 		this.cliente = cliente;
+		this.fornecedor = fornecedor;
 	}
 
 	public Long getId() {
@@ -117,6 +125,14 @@ public class Endereco implements Serializable {
 		this.cliente = cliente;
 	}
 
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -150,7 +166,8 @@ public class Endereco implements Serializable {
 	@Override
 	public String toString() {
 		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
-				+ complemento + ", cep=" + cep + ", bairro=" + bairro + ", cliente=" + cliente + "]";
+				+ complemento + ", cep=" + cep + ", bairro=" + bairro + ", cliente=" + cliente + ", fornecedor="
+				+ fornecedor + "]";
 	}
 
 }

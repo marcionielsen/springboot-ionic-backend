@@ -27,9 +27,9 @@ public class CategoriaService implements IGenericaService<Categoria> {
 
 	@Override
 	public List<Categoria> listAll() {
-		List<Categoria> listaCategorias = repo.findAll();
+		List<Categoria> lista = repo.findAll();
 
-		return listaCategorias;
+		return lista;
 	}
 
 	@Override

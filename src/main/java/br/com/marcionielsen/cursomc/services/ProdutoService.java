@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Produto;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IProdutoRepository;
+import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
@@ -19,15 +20,16 @@ public class ProdutoService implements IGenericaService<Produto> {
 	@Override
 	public Produto findById(Long id) {
 		Optional<Produto> produto = repo.findById(id);
-		
-		return produto.orElse(null);
+
+		return produto.orElseThrow(() -> new ObjetoNaoEncontradoException(
+				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Produto.class.getName() + ")"));
 	}
 
 	@Override
 	public List<Produto> listAll() {
-		List<Produto> listaProdutos = repo.findAll();
-		
-		return listaProdutos;
+		List<Produto> lista = repo.findAll();
+
+		return lista;
 	}
 
 	@Override

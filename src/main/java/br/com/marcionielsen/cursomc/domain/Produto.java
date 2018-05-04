@@ -14,6 +14,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -35,6 +36,11 @@ public class Produto implements Serializable {
 	private Double precoCusto;
 
 	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "CD_FORNECEDOR", nullable = false, referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_PRODUTOS_CD_FORNECEDOR"))
+	private Fornecedor fornecedorDoProduto;
+
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name = "PRODUTOS_CATEGORIAS", 
 	           joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName="CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), 
@@ -47,11 +53,12 @@ public class Produto implements Serializable {
 		super();
 	}
 
-	public Produto(Long id, String descricao, Double precoCusto) {
+	public Produto(Long id, String descricao, Double precoCusto, Fornecedor fornecedorDoProduto) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.precoCusto = precoCusto;
+		this.fornecedorDoProduto = fornecedorDoProduto;
 	}
 
 	public Long getId() {
@@ -78,6 +85,14 @@ public class Produto implements Serializable {
 		this.precoCusto = precoCusto;
 	}
 
+	public Fornecedor getfornecedorDoProduto() {
+		return fornecedorDoProduto;
+	}
+
+	public void setfornecedorDoProduto(Fornecedor fornecedorDoProduto) {
+		this.fornecedorDoProduto = fornecedorDoProduto;
+	}
+	
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}
@@ -118,8 +133,8 @@ public class Produto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + precoCusto + ", categorias="
-				+ categorias + "]";
+		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + precoCusto + ", fornecedorDoProduto="
+				+ fornecedorDoProduto + ", categorias=" + categorias + "]";
 	}
 
 }
