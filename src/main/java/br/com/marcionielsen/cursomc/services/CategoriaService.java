@@ -21,8 +21,7 @@ public class CategoriaService implements IGenericaService<Categoria> {
 	public Categoria findById(Long id) {
 		Optional<Categoria> categoria = repo.findById(id);
 
-		return categoria.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Categoria.class.getName() + ")") );
+		return categoria.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Categoria.class.getName()) );
 	}
 
 	@Override

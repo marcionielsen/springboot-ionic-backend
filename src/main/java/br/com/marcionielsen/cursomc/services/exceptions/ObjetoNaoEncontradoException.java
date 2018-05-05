@@ -20,4 +20,8 @@ public class ObjetoNaoEncontradoException extends RuntimeException {
 		super(cause);
 	}
 
+	public ObjetoNaoEncontradoException(String id, String tipo) {
+		super( (new StringBuilder()).append("Objeto não encontrado! -> (Id: ").append(id).append(", Tipo: ").append(tipo).append(")").toString() );
+	}
+
 }

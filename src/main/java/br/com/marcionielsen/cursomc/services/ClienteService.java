@@ -21,8 +21,7 @@ public class ClienteService implements IGenericaService<Cliente> {
 	public Cliente findById(Long id) {
 		Optional<Cliente> cliente = repo.findById(id);
 
-		return cliente.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Cliente.class.getName() + ")") );
+		return cliente.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Cliente.class.getName()) );
 	}
 
 	@Override

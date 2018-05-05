@@ -21,8 +21,7 @@ public class VendedorService implements IGenericaService<Vendedor> {
 	public Vendedor findById(Long id) {
 		Optional<Vendedor> vendedor = repo.findById(id);
 
-		return vendedor.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Vendedor.class.getName() + ")"));
+		return vendedor.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Vendedor.class.getName()));
 	}
 
 	@Override

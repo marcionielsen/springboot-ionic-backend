@@ -21,8 +21,7 @@ public class CidadeService implements IGenericaService<Cidade> {
 	public Cidade findById(Long id) {
 		Optional<Cidade> cidade = repo.findById(id);
 
-		return cidade.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Cidade.class.getName() + ")"));
+		return cidade.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Cidade.class.getName()) );
 	}
 
 	@Override

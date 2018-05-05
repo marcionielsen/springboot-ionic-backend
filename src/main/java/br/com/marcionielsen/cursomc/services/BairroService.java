@@ -21,8 +21,7 @@ public class BairroService implements IGenericaService<Bairro> {
 	public Bairro findById(Long id) {
 		Optional<Bairro> bairro = repo.findById(id);
 
-		return bairro.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Bairro.class.getName() + ")"));
+		return bairro.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Bairro.class.getName()));
 	}
 
 	@Override

@@ -21,8 +21,7 @@ public class ProdutoService implements IGenericaService<Produto> {
 	public Produto findById(Long id) {
 		Optional<Produto> produto = repo.findById(id);
 
-		return produto.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Produto.class.getName() + ")"));
+		return produto.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Produto.class.getName()) );
 	}
 
 	@Override

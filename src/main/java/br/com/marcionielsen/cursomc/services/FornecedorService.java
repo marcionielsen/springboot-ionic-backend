@@ -21,8 +21,7 @@ public class FornecedorService implements IGenericaService<Fornecedor> {
 	public Fornecedor findById(Long id) {
 		Optional<Fornecedor> fornecedor = repo.findById(id);
 
-		return fornecedor.orElseThrow(() -> new ObjetoNaoEncontradoException(
-				"Objeto não encontrado! -> (Id: " + id + ", Tipo: " + Fornecedor.class.getName() + ")"));
+		return fornecedor.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Fornecedor.class.getName()) );
 	}
 
 	@Override

@@ -22,9 +22,11 @@ public class ControllerExceptionHandler {
 		Instant instant = Instant.ofEpochMilli(System.currentTimeMillis());
 		DateTimeFormatter formatoDataHora = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 		String horaSistema = formatoDataHora.format(instant.atZone(ZoneId.of("America/Sao_Paulo")));
-		
+
+		System.out.println("======================================================"); 
 		System.out.println("====== >> Zona SystemDefault..: " + formatoDataHora.format(instant.atZone(ZoneId.systemDefault())));
 		System.out.println("====== >> Zona BRASIL_SP......: " + formatoDataHora.format(instant.atZone(ZoneId.of("America/Sao_Paulo"))));
+		System.out.println("======================================================"); 
 
 		ErroPadrao erro = new ErroPadrao(HttpStatus.NOT_FOUND.value(), e.getMessage(), horaSistema);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
