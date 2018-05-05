@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import br.com.marcionielsen.cursomc.util.Util;
+
 @Entity
 @Table(name = "PRODUTOS", indexes = { @Index(name = "UK_DS_PRODUTO", columnList = "DS_PRODUTO", unique = true) })
 public class Produto implements Serializable {
@@ -32,8 +35,8 @@ public class Produto implements Serializable {
 	@Column(name = "DS_PRODUTO", nullable = false)
 	private String descricao;
 
-	@Column(name = "VL_PRECO_CUSTO_PRODUTO", nullable = false, precision = 12, scale = 2)
-	private Double precoCusto;
+	@Column(name = "VL_PRECO_CUSTO_PRODUTO", nullable = false)
+	private BigDecimal precoCusto;
 
 	@JsonBackReference
 	@ManyToOne
@@ -42,18 +45,14 @@ public class Produto implements Serializable {
 
 	@JsonBackReference
 	@ManyToMany
-	@JoinTable(name = "PRODUTOS_CATEGORIAS", 
-	           joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName="CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), 
-	           inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName="CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), 
-               foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"),
-               inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA") )
+	@JoinTable(name = "PRODUTOS_CATEGORIAS", joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName = "CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName = "CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"), inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA"))
 	private List<Categoria> categorias = new ArrayList<>();
 
 	public Produto() {
 		super();
 	}
 
-	public Produto(Long id, String descricao, Double precoCusto, Fornecedor fornecedorDoProduto) {
+	public Produto(Long id, String descricao, BigDecimal precoCusto, Fornecedor fornecedorDoProduto) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -77,11 +76,11 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Double getPrecoCusto() {
+	public BigDecimal getPrecoCusto() {
 		return precoCusto;
 	}
 
-	public void setPrecoCusto(Double precoCusto) {
+	public void setPrecoCusto(BigDecimal precoCusto) {
 		this.precoCusto = precoCusto;
 	}
 
@@ -92,7 +91,7 @@ public class Produto implements Serializable {
 	public void setfornecedorDoProduto(Fornecedor fornecedorDoProduto) {
 		this.fornecedorDoProduto = fornecedorDoProduto;
 	}
-	
+
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}
@@ -133,8 +132,8 @@ public class Produto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + precoCusto + ", fornecedorDoProduto="
-				+ fornecedorDoProduto + ", categorias=" + categorias + "]";
+		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + Util.formatoMoeda(precoCusto)
+				+ ", fornecedorDoProduto=" + fornecedorDoProduto + ", categorias=" + categorias + "]";
 	}
 
 }

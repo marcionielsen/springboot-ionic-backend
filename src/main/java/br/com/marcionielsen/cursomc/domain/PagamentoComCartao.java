@@ -1,23 +1,34 @@
 package br.com.marcionielsen.cursomc.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-import br.com.marcionielsen.cursomc.domain.enums.BandeiraCartao;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+import br.com.marcionielsen.cursomc.domain.enums.BandeiraCartao;
+import br.com.marcionielsen.cursomc.util.Util;
+
+@Entity
 public class PagamentoComCartao extends Pagamento {
 	private static final long serialVersionUID = 1L;
 
+	@Column(name = "QTD_PARCELAS", nullable = false)
 	private Integer numeroParcelas;
-	private Double valorParcela;
+
+	@Column(name = "VLR_PARCELA", nullable = false)
+	private BigDecimal valorParcela;
+
+	@Column(name = "CD_BANDEIRA_CARTAO", nullable = false)
 	private Integer bandeiraCartao;
 
 	public PagamentoComCartao() {
 		super();
 	}
 
-	public PagamentoComCartao(Long id, Integer estadoPagamento, Date dataPagamento, Double valorFatura,
-			Double valorDesconto, Double valorJuros, Double valorMora, Double valorMulta, Pedido pedido,
-			Integer numeroParcelas, Double valorParcela, Integer bandeiraCartao) {
+	public PagamentoComCartao(Long id, Integer estadoPagamento, Date dataPagamento, BigDecimal valorFatura,
+			BigDecimal valorDesconto, BigDecimal valorJuros, BigDecimal valorMora, BigDecimal valorMulta, Pedido pedido,
+			Integer numeroParcelas, BigDecimal valorParcela, Integer bandeiraCartao) {
 		super(id, estadoPagamento, dataPagamento, valorFatura, valorDesconto, valorJuros, valorMora, valorMulta,
 				pedido);
 
@@ -34,11 +45,11 @@ public class PagamentoComCartao extends Pagamento {
 		this.numeroParcelas = numeroParcelas;
 	}
 
-	public Double getValorParcela() {
+	public BigDecimal getValorParcela() {
 		return valorParcela;
 	}
 
-	public void setValorParcela(Double valorParcela) {
+	public void setValorParcela(BigDecimal valorParcela) {
 		this.valorParcela = valorParcela;
 	}
 
@@ -53,7 +64,8 @@ public class PagamentoComCartao extends Pagamento {
 	@Override
 	public String toString() {
 		return "PagamentoComCartao [ " + super.toString() + ", numeroParcelas=" + numeroParcelas + ", valorParcela="
-				+ valorParcela + ", bandeiraCartao=" + BandeiraCartao.toEnum(bandeiraCartao).getDescricao() + "]";
+				+ Util.formatoMoeda(valorParcela) + ", bandeiraCartao="
+				+ BandeiraCartao.toEnum(bandeiraCartao).getDescricao() + "]";
 	}
 
 }

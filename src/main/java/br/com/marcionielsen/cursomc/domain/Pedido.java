@@ -3,18 +3,41 @@ package br.com.marcionielsen.cursomc.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import br.com.marcionielsen.cursomc.util.Util;
 
+@Entity
+@Table(name="PEDIDOS")
 public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name="CD_PEDIDO")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private Date dataPedido;
 
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
 
+	@ManyToOne
+	@JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_PEDIDOS_CD_CLIENTE"))
 	private Cliente cliente;
 
+	@ManyToOne
+	@JoinColumn(name="CD_ENDERECO_ENTREGA", nullable = true, referencedColumnName = "CD_ENDERECO", foreignKey = @ForeignKey(name = "FK_PEDIDOS_CD_ENDERECO_ENTREGA"))
 	private Endereco enderecoDeEntrega;
 
 	public Pedido() {

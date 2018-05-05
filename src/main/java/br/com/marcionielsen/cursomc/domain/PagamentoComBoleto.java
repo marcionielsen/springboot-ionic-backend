@@ -1,20 +1,29 @@
 package br.com.marcionielsen.cursomc.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.marcionielsen.cursomc.util.Util;
 
+@Entity
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DT_VENCIMENTO", nullable = false)
 	private Date dataVencimento;
 
 	public PagamentoComBoleto() {
 		super();
 	}
 
-	public PagamentoComBoleto(Long id, Integer estadoPagamento, Date dataPagamento, Double valorFatura,
-			Double valorDesconto, Double valorJuros, Double valorMora, Double valorMulta, Pedido pedido,
+	public PagamentoComBoleto(Long id, Integer estadoPagamento, Date dataPagamento, BigDecimal valorFatura,
+			BigDecimal valorDesconto, BigDecimal valorJuros, BigDecimal valorMora, BigDecimal valorMulta, Pedido pedido,
 			Date dataVencimento) {
 		super(id, estadoPagamento, dataPagamento, valorFatura, valorDesconto, valorJuros, valorMora, valorMulta,
 				pedido);

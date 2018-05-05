@@ -1,31 +1,68 @@
 package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.marcionielsen.cursomc.domain.enums.EstadoPagamento;
 import br.com.marcionielsen.cursomc.util.Util;
 
-public class Pagamento implements Serializable {
+@Entity
+@Table(name = "PAGAMENTOS", 
+       indexes = {@Index(name = "IDX_PAGTOS_CD_PEDIDO_DT_PAGTO", columnList = "CD_PEDIDO, DT_PAGAMENTO", unique = false) })
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private Long id;
-	private Integer estadoPagamento;
-	private Date dataPagamento;
-	private Double valorFatura;
-	private Double valorDesconto;
-	private Double valorJuros;
-	private Double valorMora;
-	private Double valorMulta;
 
+	@Column(name = "CD_STATUS_PAGAMENTO", nullable = false)
+	private Integer estadoPagamento;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DT_PAGAMENTO", nullable = false)
+	private Date dataPagamento;
+
+	@Column(name = "VLR_FATURA", nullable = false)
+	private BigDecimal valorFatura;
+
+	@Column(name = "VLR_DESCONTO_PGTO", nullable = false)
+	private BigDecimal valorDesconto;
+
+	@Column(name = "VLR_JUROS_PGTO", nullable = false)
+	private BigDecimal valorJuros;
+
+	@Column(name = "VLR_MORA_PGTO", nullable = false)
+	private BigDecimal valorMora;
+
+	@Column(name = "VLR_MULTA_PGTO", nullable = false)
+	private BigDecimal valorMulta;
+
+	@OneToOne
+	@JoinColumn(name = "CD_PEDIDO")
+	@MapsId
 	private Pedido pedido;
 
 	public Pagamento() {
 		super();
 	}
 
-	public Pagamento(Long id, Integer estadoPagamento, Date dataPagamento, Double valorFatura, Double valorDesconto,
-			Double valorJuros, Double valorMora, Double valorMulta, Pedido pedido) {
+	public Pagamento(Long id, Integer estadoPagamento, Date dataPagamento, BigDecimal valorFatura, BigDecimal valorDesconto,
+			BigDecimal valorJuros, BigDecimal valorMora, BigDecimal valorMulta, Pedido pedido) {
 		super();
 		this.id = id;
 		this.estadoPagamento = estadoPagamento;
@@ -62,43 +99,43 @@ public class Pagamento implements Serializable {
 		this.dataPagamento = dataPagamento;
 	}
 
-	public Double getValorFatura() {
+	public BigDecimal getValorFatura() {
 		return valorFatura;
 	}
 
-	public void setValorFatura(Double valorFatura) {
+	public void setValorFatura(BigDecimal valorFatura) {
 		this.valorFatura = valorFatura;
 	}
 
-	public Double getValorDesconto() {
+	public BigDecimal getValorDesconto() {
 		return valorDesconto;
 	}
 
-	public void setValorDesconto(Double valorDesconto) {
+	public void setValorDesconto(BigDecimal valorDesconto) {
 		this.valorDesconto = valorDesconto;
 	}
 
-	public Double getValorJuros() {
+	public BigDecimal getValorJuros() {
 		return valorJuros;
 	}
 
-	public void setValorJuros(Double valorJuros) {
+	public void setValorJuros(BigDecimal valorJuros) {
 		this.valorJuros = valorJuros;
 	}
 
-	public Double getValorMora() {
+	public BigDecimal getValorMora() {
 		return valorMora;
 	}
 
-	public void setValorMora(Double valorMora) {
+	public void setValorMora(BigDecimal valorMora) {
 		this.valorMora = valorMora;
 	}
 
-	public Double getValorMulta() {
+	public BigDecimal getValorMulta() {
 		return valorMulta;
 	}
 
-	public void setValorMulta(Double valorMulta) {
+	public void setValorMulta(BigDecimal valorMulta) {
 		this.valorMulta = valorMulta;
 	}
 
@@ -142,10 +179,11 @@ public class Pagamento implements Serializable {
 
 	@Override
 	public String toString() {
+		
 		return "Pagamento [id=" + id + ", estadoPagamento=" + EstadoPagamento.toEnum(estadoPagamento).getDescricao()
-				+ ", dataPagamento=" + Util.formatoDataHora(dataPagamento.toInstant()) + ", valorFatura=" + valorFatura
-				+ ", valorDesconto=" + valorDesconto + ", valorJuros=" + valorJuros + ", valorMora=" + valorMora
-				+ ", valorMulta=" + valorMulta + ", pedido=" + pedido + "]";
+				+ ", dataPagamento=" + Util.formatoDataHora(dataPagamento.toInstant()) + ", valorFatura=" + Util.formatoMoeda(valorFatura)
+				+ ", valorDesconto=" + Util.formatoMoeda(valorDesconto) + ", valorJuros=" + Util.formatoMoeda(valorJuros) 
+				+ ", valorMora=" + Util.formatoMoeda(valorMora) + ", valorMulta=" + Util.formatoMoeda(valorMulta) + ", pedido=" + pedido + "]";
 	}
 
 }
