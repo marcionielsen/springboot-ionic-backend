@@ -38,7 +38,7 @@ public class CidadeController implements IGenericaController<Cidade> {
 	}
 
 	@Override
-	public Cidade inserir(Cidade obj) {
+	public ResponseEntity<Void> inserir(Cidade obj) {
 		return null;
 	}
 

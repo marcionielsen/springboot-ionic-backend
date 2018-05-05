@@ -38,7 +38,7 @@ public class VendedorController implements IGenericaController<Vendedor> {
 	}
 
 	@Override
-	public Vendedor inserir(Vendedor obj) {
+	public ResponseEntity<Void> inserir(Vendedor obj) {
 		return null;
 	}
 

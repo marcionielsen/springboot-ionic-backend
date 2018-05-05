@@ -38,10 +38,10 @@ public class BairroController implements IGenericaController<Bairro> {
 	}
 
 	@Override
-	public Bairro inserir(Bairro obj) {
+	public ResponseEntity<Void> inserir(Bairro obj) {
 		return null;
 	}
-
+	
 	@Override
 	public Bairro editar(Bairro obj) {
 		return null;

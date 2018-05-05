@@ -33,7 +33,8 @@ public class CategoriaService implements IGenericaService<Categoria> {
 
 	@Override
 	public Categoria inserir(Categoria obj) {
-		return null;
+		obj.setId(null);
+		return repo.save(obj);
 	}
 
 	@Override

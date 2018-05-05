@@ -12,7 +12,7 @@ public interface IGenericaController<T> {
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<?> listAll();
 
-	public T inserir(T obj);
+	public ResponseEntity<Void> inserir(T obj);
 
 	public T editar(T obj);
 

@@ -36,8 +36,9 @@ public class ClienteController implements IGenericaController<Cliente> {
 		return ResponseEntity.ok().body(lista);
 	}
 
+
 	@Override
-	public Cliente inserir(Cliente obj) {
+	public ResponseEntity<Void> inserir(Cliente obj) {
 		return null;
 	}
 

@@ -38,7 +38,7 @@ public class FornecedorController implements IGenericaController<Fornecedor> {
 	}
 
 	@Override
-	public Fornecedor inserir(Fornecedor obj) {
+	public ResponseEntity<Void> inserir(Fornecedor obj) {
 		return null;
 	}
 

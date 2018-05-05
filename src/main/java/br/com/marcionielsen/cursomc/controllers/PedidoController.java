@@ -37,7 +37,7 @@ public class PedidoController implements IGenericaController<Pedido> {
 	}
 
 	@Override
-	public Pedido inserir(Pedido obj) {
+	public ResponseEntity<Void> inserir(Pedido obj) {
 		return null;
 	}
 

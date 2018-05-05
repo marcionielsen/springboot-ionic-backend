@@ -37,7 +37,7 @@ public class ProdutoController implements IGenericaController<Produto> {
 	}
 
 	@Override
-	public Produto inserir(Produto obj) {
+	public ResponseEntity<Void> inserir(Produto obj) {
 		return null;
 	}
 

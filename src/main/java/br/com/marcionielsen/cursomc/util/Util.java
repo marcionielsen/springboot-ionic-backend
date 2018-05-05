@@ -30,4 +30,22 @@ public class Util {
 		return df.format(valor);
 	}
 
+	public static String removerElementoURI(String strOri, String paramRemove) {
+
+		StringBuilder sb = new StringBuilder();
+
+		String[] elementosUri = strOri.split("/");
+
+		for (String elemento : elementosUri) {
+
+			if (!paramRemove.equalsIgnoreCase(elemento)) {
+				sb.append(elemento).append("/");
+			}
+		}
+
+		int idx = sb.toString().lastIndexOf("/");
+
+		return sb.toString().substring(0, idx);
+	}
+
 }
