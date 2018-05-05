@@ -13,7 +13,7 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ESTADOS", indexes = { @Index(name = "UK_NM_ESTADO", columnList = "NM_ESTADO", unique = true),
@@ -34,7 +34,7 @@ public class Estado implements Serializable {
 	@Column(name = "SIGLA_ESTADO", length = 2, nullable = false)
 	private String sigla;
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="estado")
 	private List<Cidade> cidades = new ArrayList<>();
 

@@ -19,8 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name = "FORNECEDORES", indexes = {
 		@Index(name = "UK_NM_FORNECEDOR", columnList = "NM_FORNECEDOR", unique = true),
@@ -44,11 +42,9 @@ public class Fornecedor implements Serializable {
 	@Column(name = "DS_EMAIL_FORNECEDOR")
 	private String email;
 
-	@JsonManagedReference
 	@OneToMany(mappedBy = "fornecedor")
 	private List<Endereco> filiais = new ArrayList<>();
 
-	@JsonManagedReference
 	@OneToMany(mappedBy = "fornecedorDoProduto")
 	private List<Produto> produtos = new ArrayList<>();
 

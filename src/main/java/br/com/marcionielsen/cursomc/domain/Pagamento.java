@@ -18,8 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.marcionielsen.cursomc.domain.enums.EstadoPagamento;
 import br.com.marcionielsen.cursomc.util.Util;
@@ -57,7 +57,7 @@ public abstract class Pagamento implements Serializable {
 	@Column(name = "VLR_MULTA_PGTO", nullable = false)
 	private BigDecimal valorMulta;
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "CD_PEDIDO", nullable = false, referencedColumnName = "CD_PEDIDO", foreignKey = @ForeignKey(name = "FK_PAGAMENTOS_CD_PEDIDO") )
 	@MapsId

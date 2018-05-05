@@ -16,8 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "CIDADES", indexes = { @Index(name = "IDX_NM_CIDADE", columnList = "NM_CIDADE", unique = false) })
@@ -32,11 +31,10 @@ public class Cidade implements Serializable {
 	@Column(name = "NM_CIDADE", nullable = false)
 	private String nome;
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="cidade")
 	private List<Bairro> bairros = new ArrayList<>();
 	
-	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "CD_ESTADO", nullable = false, referencedColumnName = "CD_ESTADO", foreignKey = @ForeignKey(name = "FK_CD_ESTADO"))
 	private Estado estado;

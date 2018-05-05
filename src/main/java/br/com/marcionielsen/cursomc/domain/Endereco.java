@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ENDERECOS", indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
@@ -42,12 +42,12 @@ public class Endereco implements Serializable {
 	@JoinColumn(name = "CD_BAIRRO", nullable = false, referencedColumnName = "CD_BAIRRO", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_BAIRRO"))
 	private Bairro bairro;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
 	private Cliente cliente;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "CD_FORNECEDOR", nullable = true, referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_FORNECEDOR"))
 	private Fornecedor fornecedor;
