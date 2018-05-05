@@ -2,6 +2,8 @@ package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -39,7 +42,10 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="CD_ENDERECO_ENTREGA", nullable = true, referencedColumnName = "CD_ENDERECO", foreignKey = @ForeignKey(name = "FK_PEDIDOS_CD_ENDERECO_ENTREGA"))
 	private Endereco enderecoDeEntrega;
-
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Pedido() {
 		super();
 	}
@@ -93,6 +99,14 @@ public class Pedido implements Serializable {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -126,7 +140,7 @@ public class Pedido implements Serializable {
 	@Override
 	public String toString() {
 		return "Pedido [id=" + id + ", dataPedido=" + Util.formatoDataHora(dataPedido.toInstant()) + ", pagamento="
-				+ pagamento + ", cliente=" + cliente + ", enderecoDeEntrega=" + enderecoDeEntrega + "]";
+				+ pagamento + ", cliente=" + cliente + ", enderecoDeEntrega=" + enderecoDeEntrega + ", itens=" + itens + "]";
 	}
 
 }

@@ -3,7 +3,9 @@ package br.com.marcionielsen.cursomc.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -48,6 +51,10 @@ public class Produto implements Serializable {
 	@JoinTable(name = "PRODUTOS_CATEGORIAS", joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName = "CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName = "CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"), inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA"))
 	private List<Categoria> categorias = new ArrayList<>();
 
+
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Produto() {
 		super();
 	}
@@ -60,6 +67,16 @@ public class Produto implements Serializable {
 		this.fornecedorDoProduto = fornecedorDoProduto;
 	}
 
+	public List<Pedido> getPedidos() {
+		List<Pedido> lista = new ArrayList<>();
+		
+		for(ItemPedido item : itens) {
+			lista.add(item.getPedido());
+		}
+		
+		return lista;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -84,20 +101,28 @@ public class Produto implements Serializable {
 		this.precoCusto = precoCusto;
 	}
 
-	public Fornecedor getfornecedorDoProduto() {
-		return fornecedorDoProduto;
-	}
-
-	public void setfornecedorDoProduto(Fornecedor fornecedorDoProduto) {
-		this.fornecedorDoProduto = fornecedorDoProduto;
-	}
-
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+
+	public Fornecedor getFornecedorDoProduto() {
+		return fornecedorDoProduto;
+	}
+
+	public void setFornecedorDoProduto(Fornecedor fornecedorDoProduto) {
+		this.fornecedorDoProduto = fornecedorDoProduto;
 	}
 
 	@Override
@@ -133,7 +158,7 @@ public class Produto implements Serializable {
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + Util.formatoMoeda(precoCusto)
-				+ ", fornecedorDoProduto=" + fornecedorDoProduto + ", categorias=" + categorias + "]";
+				+ ", fornecedorDoProduto=" + fornecedorDoProduto + ", categorias=" + categorias + ", itens=" + itens + "]";
 	}
 
 }
