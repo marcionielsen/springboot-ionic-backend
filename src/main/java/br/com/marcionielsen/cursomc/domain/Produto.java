@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.marcionielsen.cursomc.util.Util;
 
@@ -51,7 +52,7 @@ public class Produto implements Serializable {
 	@JoinTable(name = "PRODUTOS_CATEGORIAS", joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName = "CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName = "CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"), inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA"))
 	private List<Categoria> categorias = new ArrayList<>();
 
-
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
 	
@@ -67,6 +68,7 @@ public class Produto implements Serializable {
 		this.fornecedorDoProduto = fornecedorDoProduto;
 	}
 
+	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<>();
 		

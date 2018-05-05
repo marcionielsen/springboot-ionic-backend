@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Inheritance;
@@ -16,6 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.marcionielsen.cursomc.domain.enums.EstadoPagamento;
 import br.com.marcionielsen.cursomc.util.Util;
@@ -33,6 +37,7 @@ public abstract class Pagamento implements Serializable {
 	@Column(name = "CD_STATUS_PAGAMENTO", nullable = false)
 	private Integer estadoPagamento;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "DT_PAGAMENTO", nullable = false)
 	private Date dataPagamento;
@@ -52,8 +57,9 @@ public abstract class Pagamento implements Serializable {
 	@Column(name = "VLR_MULTA_PGTO", nullable = false)
 	private BigDecimal valorMulta;
 
+	@JsonBackReference
 	@OneToOne
-	@JoinColumn(name = "CD_PEDIDO")
+	@JoinColumn(name = "CD_PEDIDO", nullable = false, referencedColumnName = "CD_PEDIDO", foreignKey = @ForeignKey(name = "FK_PAGAMENTOS_CD_PEDIDO") )
 	@MapsId
 	private Pedido pedido;
 
