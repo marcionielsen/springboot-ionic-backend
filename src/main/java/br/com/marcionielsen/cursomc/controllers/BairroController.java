@@ -30,7 +30,7 @@ public class BairroController extends AbstrataController implements IGenericaCon
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Bairro>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Bairro> lista = bairroService.listAll();
 		return ResponseEntity.ok().body(lista);

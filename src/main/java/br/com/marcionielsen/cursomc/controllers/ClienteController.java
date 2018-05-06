@@ -30,7 +30,7 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Cliente>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Cliente> lista = clienteService.listAll();
 		return ResponseEntity.ok().body(lista);

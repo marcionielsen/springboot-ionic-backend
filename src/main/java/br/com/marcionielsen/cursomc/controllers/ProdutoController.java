@@ -30,7 +30,7 @@ public class ProdutoController extends AbstrataController implements IGenericaCo
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Produto>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Produto> lista = produtoService.listAll();
 		return ResponseEntity.ok().body(lista);

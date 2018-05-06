@@ -8,7 +8,7 @@ public interface IGenericaController<T> {
 
 	public ResponseEntity<T> findById(Long id);
 
-	public ResponseEntity<List<T>> listAll();
+	public ResponseEntity<List<?>> listAll();
 
 	public ResponseEntity<Void> insert(T obj);
 

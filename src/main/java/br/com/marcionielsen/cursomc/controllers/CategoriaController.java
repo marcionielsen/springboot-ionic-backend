@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Categoria;
+import br.com.marcionielsen.cursomc.dto.CategoriaDTO;
 import br.com.marcionielsen.cursomc.services.CategoriaService;
 
 @RestController
@@ -31,10 +33,13 @@ public class CategoriaController extends AbstrataController implements IGenerica
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Categoria>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Categoria> lista = categoriaService.listAll();
-		return ResponseEntity.ok().body(lista);
+		
+		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList()); 
+		
+		return ResponseEntity.ok().body(listaDTO);
 	}
 
 	@Override

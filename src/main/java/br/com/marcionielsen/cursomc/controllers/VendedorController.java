@@ -30,7 +30,7 @@ public class VendedorController extends AbstrataController implements IGenericaC
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Vendedor>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Vendedor> lista = vendedorService.listAll();
 		return ResponseEntity.ok().body(lista);

@@ -30,7 +30,7 @@ public class PedidoController extends AbstrataController implements IGenericaCon
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Pedido>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Pedido> lista = pedidoService.listAll();
 		return ResponseEntity.ok().body(lista);

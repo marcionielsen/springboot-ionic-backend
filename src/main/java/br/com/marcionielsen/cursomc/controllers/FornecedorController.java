@@ -30,7 +30,7 @@ public class FornecedorController extends AbstrataController implements IGeneric
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<Fornecedor>> listAll() {
+	public ResponseEntity<List<?>> listAll() {
 
 		List<Fornecedor> lista = fornecedorService.listAll();
 		return ResponseEntity.ok().body(lista);
