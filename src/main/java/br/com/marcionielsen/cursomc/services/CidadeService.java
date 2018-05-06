@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Cidade;
@@ -21,7 +22,7 @@ public class CidadeService implements IGenericaService<Cidade> {
 	public Cidade findById(Long id) {
 		Optional<Cidade> cidade = repo.findById(id);
 
-		return cidade.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Cidade.class.getName()) );
+		return cidade.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Cidade.class.getName()));
 	}
 
 	@Override
@@ -29,6 +30,11 @@ public class CidadeService implements IGenericaService<Cidade> {
 		List<Cidade> lista = repo.findAll();
 
 		return lista;
+	}
+
+	@Override
+	public Page<Cidade> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
+		return null;
 	}
 
 	@Override

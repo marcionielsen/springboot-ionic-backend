@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Vendedor;
@@ -29,6 +30,11 @@ public class VendedorService implements IGenericaService<Vendedor> {
 		List<Vendedor> lista = repo.findAll();
 
 		return lista;
+	}
+
+	@Override
+	public Page<Vendedor> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
+		return null;
 	}
 
 	@Override

@@ -99,6 +99,31 @@ public class CursomcApplication implements CommandLineRunner {
 		Categoria cat2 = new Categoria(null, "Escritório");
 		Categoria cat3 = new Categoria(null, "Material de Limpeza");
 
+		Categoria cat4 = new Categoria(null, "Medicamentos e Produtos hospitalares");
+		Categoria cat5 = new Categoria(null, "Eletrônicos");
+		Categoria cat6 = new Categoria(null, "Eletrodomésticos");
+
+		Categoria cat7 = new Categoria(null, "Jogos");
+		Categoria cat8 = new Categoria(null, "Livros");
+		Categoria cat9 = new Categoria(null, "Smartfones e Celulares");
+
+		Categoria cat10 = new Categoria(null, "Perfumaria e Higiene Pessoal");
+		Categoria cat11 = new Categoria(null, "Ferramentas");
+		Categoria cat12 = new Categoria(null, "Cama, Mesa e Banho");
+
+		Categoria cat13 = new Categoria(null, "Construção civil");
+		Categoria cat14 = new Categoria(null, "Papelaria");
+		Categoria cat15 = new Categoria(null, "Alimentos");
+
+		Categoria cat16 = new Categoria(null, "Produtos veterinários");
+		Categoria cat17 = new Categoria(null, "Vestuário Masculino");
+		Categoria cat18 = new Categoria(null, "Vestuário Feminino");
+		
+		Categoria cat19 = new Categoria(null, "Vestuário Infantil");
+		Categoria cat20 = new Categoria(null, "Calçados, Bolsas, Malas e Artigos em Couro");
+		Categoria cat21 = new Categoria(null, "Jardinagem");
+		Categoria cat22 = new Categoria(null, "Decoração");
+		
 		Produto p1 = new Produto(null, "Computador", BigDecimal.valueOf(2000.00), f2);
 		Produto p2 = new Produto(null, "Impressora", BigDecimal.valueOf(800.00), f3);
 		Produto p3 = new Produto(null, "Mouse", BigDecimal.valueOf(80.00), f1);
@@ -268,7 +293,11 @@ public class CursomcApplication implements CommandLineRunner {
 		fornecedorRepo.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
 		enderecoRepo.saveAll(Arrays.asList(endeFornec1, endeFornec2, endeFornec3, endeFornec4, endeFornec5));
 
-		categRepo.saveAll(Arrays.asList(cat1, cat2, cat3));
+		categRepo.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, 
+				                        cat7, cat8, cat9, cat10, cat11, cat12, 
+				                        cat13, cat14, cat15, cat16, cat17, cat18,
+				                        cat19, cat20, cat21, cat22));
+		
 		prodtRepo.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9));
 		
 		pedidoRepo.saveAll(Arrays.asList(ped1, ped2));

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Produto;
@@ -21,7 +22,7 @@ public class ProdutoService implements IGenericaService<Produto> {
 	public Produto findById(Long id) {
 		Optional<Produto> produto = repo.findById(id);
 
-		return produto.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Produto.class.getName()) );
+		return produto.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Produto.class.getName()));
 	}
 
 	@Override
@@ -29,6 +30,11 @@ public class ProdutoService implements IGenericaService<Produto> {
 		List<Produto> lista = repo.findAll();
 
 		return lista;
+	}
+
+	@Override
+	public Page<Produto> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
+		return null;
 	}
 
 	@Override

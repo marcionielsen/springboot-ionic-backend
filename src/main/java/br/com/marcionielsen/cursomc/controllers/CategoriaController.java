@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
@@ -36,12 +38,26 @@ public class CategoriaController extends AbstrataController implements IGenerica
 	public ResponseEntity<List<?>> listAll() {
 
 		List<Categoria> lista = categoriaService.listAll();
-		
-		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList()); 
-		
+
+		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
+	@Override
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public ResponseEntity<Page<?>> listPerPage(@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
+			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+
+		Page<Categoria> lista = categoriaService.listPerPage(numPage, linesPage, orderBy, direction);
+
+		Page<CategoriaDTO> listaDTO = lista.map(obj -> new CategoriaDTO(obj));
+
+		return ResponseEntity.ok().body(listaDTO);
+	}
+	
 	@Override
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
@@ -55,7 +71,7 @@ public class CategoriaController extends AbstrataController implements IGenerica
 	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Categoria obj) {
 		obj.setId(id);
 		obj = categoriaService.update(obj);
-		
+
 		return ResponseEntity.noContent().build();
 	}
 
@@ -63,8 +79,8 @@ public class CategoriaController extends AbstrataController implements IGenerica
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		categoriaService.delete(id);
-		
+
 		return ResponseEntity.noContent().build();
 	}
-	
+
 }

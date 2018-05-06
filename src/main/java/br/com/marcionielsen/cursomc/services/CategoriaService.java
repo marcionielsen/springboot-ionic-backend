@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Categoria;
@@ -14,7 +17,7 @@ import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoExcep
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class CategoriaService implements IGenericaService<Categoria> {
+public class CategoriaService extends AbstrataService<Categoria> implements IGenericaService<Categoria> {
 
 	@Autowired
 	private ICategoriaRepository repo;
@@ -31,6 +34,13 @@ public class CategoriaService implements IGenericaService<Categoria> {
 		List<Categoria> lista = repo.findAll();
 
 		return lista;
+	}
+
+	@Override
+	public Page<Categoria> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(numPage, linesPage, Direction.valueOf(direction), orderBy);
+
+		return repo.findAll(pageRequest);
 	}
 
 	@Override

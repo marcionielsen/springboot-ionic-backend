@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Fornecedor;
@@ -21,7 +22,8 @@ public class FornecedorService implements IGenericaService<Fornecedor> {
 	public Fornecedor findById(Long id) {
 		Optional<Fornecedor> fornecedor = repo.findById(id);
 
-		return fornecedor.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Fornecedor.class.getName()) );
+		return fornecedor
+				.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Fornecedor.class.getName()));
 	}
 
 	@Override
@@ -29,6 +31,11 @@ public class FornecedorService implements IGenericaService<Fornecedor> {
 		List<Fornecedor> lista = repo.findAll();
 
 		return lista;
+	}
+
+	@Override
+	public Page<Fornecedor> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
+		return null;
 	}
 
 	@Override

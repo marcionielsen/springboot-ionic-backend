@@ -3,6 +3,7 @@ package br.com.marcionielsen.cursomc.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,11 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 
 		List<Cliente> lista = clienteService.listAll();
 		return ResponseEntity.ok().body(lista);
+	}
+
+	@Override
+	public ResponseEntity<Page<?>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
+		return null;
 	}
 
 	@Override
