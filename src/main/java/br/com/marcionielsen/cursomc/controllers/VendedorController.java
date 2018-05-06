@@ -48,8 +48,8 @@ public class VendedorController extends AbstrataController implements IGenericaC
 	}
 
 	@Override
-	public void delete(Long id) {
-
+	public ResponseEntity<Void> delete(Long id) {
+		return null;
 	}
 
 }

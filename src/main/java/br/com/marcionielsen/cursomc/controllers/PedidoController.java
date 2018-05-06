@@ -47,8 +47,8 @@ public class PedidoController extends AbstrataController implements IGenericaCon
 	}
 
 	@Override
-	public void delete(Long id) {
-
+	public ResponseEntity<Void> delete(Long id) {
+		return null;
 	}
 
 }

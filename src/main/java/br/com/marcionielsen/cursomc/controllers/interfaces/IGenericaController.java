@@ -14,5 +14,5 @@ public interface IGenericaController<T> {
 
 	public ResponseEntity<Void> update(Long id, T obj);
 
-	public void delete(Long id);
+	public ResponseEntity<Void> delete(Long id);
 }

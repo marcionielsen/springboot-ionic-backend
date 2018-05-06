@@ -55,7 +55,11 @@ public class CategoriaController extends AbstrataController implements IGenerica
 	}
 
 	@Override
-	public void delete(Long id) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		categoriaService.delete(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 }
