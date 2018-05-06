@@ -32,17 +32,17 @@ public class ProdutoService implements IGenericaService<Produto> {
 	}
 
 	@Override
-	public Produto inserir(Produto obj) {
+	public Produto insert(Produto obj) {
 		return null;
 	}
 
 	@Override
-	public Produto editar(Produto obj) {
+	public Produto update(Produto obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 	}
 
 }

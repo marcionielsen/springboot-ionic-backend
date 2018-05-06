@@ -32,17 +32,17 @@ public class VendedorService implements IGenericaService<Vendedor> {
 	}
 
 	@Override
-	public Vendedor inserir(Vendedor obj) {
+	public Vendedor insert(Vendedor obj) {
 		return null;
 	}
 
 	@Override
-	public Vendedor editar(Vendedor obj) {
+	public Vendedor update(Vendedor obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

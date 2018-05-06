@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.ProdutoService;
 
 @RestController
 @RequestMapping(value = "/produtos")
-public class ProdutoController implements IGenericaController<Produto> {
+public class ProdutoController extends AbstrataController implements IGenericaController<Produto> {
 
 	@Autowired
 	private ProdutoService produtoService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Produto> findById(@PathVariable Long id) {
 
 		Produto produto = produtoService.findById(id);
 		return ResponseEntity.ok().body(produto);
@@ -30,24 +30,24 @@ public class ProdutoController implements IGenericaController<Produto> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Produto>> listAll() {
 
 		List<Produto> lista = produtoService.listAll();
 		return ResponseEntity.ok().body(lista);
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Produto obj) {
+	public ResponseEntity<Void> insert(Produto obj) {
 		return null;
 	}
 
 	@Override
-	public Produto editar(Produto obj) {
+	public ResponseEntity<Void> update(Long id, Produto obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

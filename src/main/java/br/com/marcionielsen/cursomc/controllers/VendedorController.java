@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.VendedorService;
 
 @RestController
 @RequestMapping(value = "/vendedores")
-public class VendedorController implements IGenericaController<Vendedor> {
+public class VendedorController extends AbstrataController implements IGenericaController<Vendedor> {
 
 	@Autowired
 	private VendedorService vendedorService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Vendedor> findById(@PathVariable Long id) {
 
 		Vendedor vendedor = vendedorService.findById(id);
 		return ResponseEntity.ok().body(vendedor);
@@ -30,7 +30,7 @@ public class VendedorController implements IGenericaController<Vendedor> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Vendedor>> listAll() {
 
 		List<Vendedor> lista = vendedorService.listAll();
 		return ResponseEntity.ok().body(lista);
@@ -38,17 +38,17 @@ public class VendedorController implements IGenericaController<Vendedor> {
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Vendedor obj) {
+	public ResponseEntity<Void> insert(Vendedor obj) {
 		return null;
 	}
 
 	@Override
-	public Vendedor editar(Vendedor obj) {
+	public ResponseEntity<Void> update(Long id, Vendedor obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

@@ -32,17 +32,17 @@ public class ClienteService implements IGenericaService<Cliente> {
 	}
 
 	@Override
-	public Cliente inserir(Cliente obj) {
+	public Cliente insert(Cliente obj) {
 		return null;
 	}
 
 	@Override
-	public Cliente editar(Cliente obj) {
+	public Cliente update(Cliente obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 		
 	}
 

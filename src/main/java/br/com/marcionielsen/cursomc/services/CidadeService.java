@@ -32,17 +32,17 @@ public class CidadeService implements IGenericaService<Cidade> {
 	}
 
 	@Override
-	public Cidade inserir(Cidade obj) {
+	public Cidade insert(Cidade obj) {
 		return null;
 	}
 
 	@Override
-	public Cidade editar(Cidade obj) {
+	public Cidade update(Cidade obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

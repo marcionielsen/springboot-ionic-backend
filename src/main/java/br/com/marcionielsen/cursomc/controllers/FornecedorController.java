@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.FornecedorService;
 
 @RestController
 @RequestMapping(value = "/fornecedores")
-public class FornecedorController implements IGenericaController<Fornecedor> {
+public class FornecedorController extends AbstrataController implements IGenericaController<Fornecedor> {
 
 	@Autowired
 	private FornecedorService fornecedorService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Fornecedor> findById(@PathVariable Long id) {
 
 		Fornecedor fornecedor = fornecedorService.findById(id);
 		return ResponseEntity.ok().body(fornecedor);
@@ -30,7 +30,7 @@ public class FornecedorController implements IGenericaController<Fornecedor> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Fornecedor>> listAll() {
 
 		List<Fornecedor> lista = fornecedorService.listAll();
 		return ResponseEntity.ok().body(lista);
@@ -38,17 +38,17 @@ public class FornecedorController implements IGenericaController<Fornecedor> {
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Fornecedor obj) {
+	public ResponseEntity<Void> insert(Fornecedor obj) {
 		return null;
 	}
 
 	@Override
-	public Fornecedor editar(Fornecedor obj) {
+	public ResponseEntity<Void> update(Long id, Fornecedor obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

@@ -8,10 +8,10 @@ public interface IGenericaService<T> {
 	
 	public List<T> listAll();
 	
-	public T inserir(T obj);
+	public T insert(T obj);
 	
-	public T editar(T obj);
+	public T update(T obj);
 	
-	public void excluir(Long id);
+	public void delete(Long id);
 	
 }

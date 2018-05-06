@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.CidadeService;
 
 @RestController
 @RequestMapping(value = "/cidades")
-public class CidadeController implements IGenericaController<Cidade> {
+public class CidadeController extends AbstrataController implements IGenericaController<Cidade> {
 
 	@Autowired
 	private CidadeService cidadeService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Cidade> findById(@PathVariable Long id) {
 
 		Cidade cidade = cidadeService.findById(id);
 		return ResponseEntity.ok().body(cidade);
@@ -30,7 +30,7 @@ public class CidadeController implements IGenericaController<Cidade> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Cidade>> listAll() {
 
 		List<Cidade> lista = cidadeService.listAll();
 		return ResponseEntity.ok().body(lista);
@@ -38,17 +38,17 @@ public class CidadeController implements IGenericaController<Cidade> {
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Cidade obj) {
+	public ResponseEntity<Void> insert(Cidade obj) {
 		return null;
 	}
 
 	@Override
-	public Cidade editar(Cidade obj) {
+	public ResponseEntity<Void> update(Long id, Cidade obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

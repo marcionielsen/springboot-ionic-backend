@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.BairroService;
 
 @RestController
 @RequestMapping(value = "/bairros")
-public class BairroController implements IGenericaController<Bairro> {
+public class BairroController extends AbstrataController implements IGenericaController<Bairro> {
 
 	@Autowired
 	private BairroService bairroService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Bairro> findById(@PathVariable Long id) {
 
 		Bairro bairro = bairroService.findById(id);
 		return ResponseEntity.ok().body(bairro);
@@ -30,7 +30,7 @@ public class BairroController implements IGenericaController<Bairro> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Bairro>> listAll() {
 
 		List<Bairro> lista = bairroService.listAll();
 		return ResponseEntity.ok().body(lista);
@@ -38,17 +38,17 @@ public class BairroController implements IGenericaController<Bairro> {
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Bairro obj) {
-		return null;
-	}
-	
-	@Override
-	public Bairro editar(Bairro obj) {
+	public ResponseEntity<Void> insert(Bairro obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public ResponseEntity<Void> update(Long id, Bairro obj) {
+		return null;
+	}
+
+	@Override
+	public void delete(Long id) {
 
 	}
 

@@ -32,18 +32,21 @@ public class CategoriaService implements IGenericaService<Categoria> {
 	}
 
 	@Override
-	public Categoria inserir(Categoria obj) {
+	public Categoria insert(Categoria obj) {
 		obj.setId(null);
+		
 		return repo.save(obj);
 	}
 
 	@Override
-	public Categoria editar(Categoria obj) {
-		return null;
+	public Categoria update(Categoria obj) {
+		findById(obj.getId());
+		
+		return repo.save(obj);
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

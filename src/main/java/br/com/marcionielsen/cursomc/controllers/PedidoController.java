@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.PedidoService;
 
 @RestController
 @RequestMapping(value = "/pedidos")
-public class PedidoController implements IGenericaController<Pedido> {
+public class PedidoController extends AbstrataController implements IGenericaController<Pedido> {
 
 	@Autowired
 	private PedidoService pedidoService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Pedido> findById(@PathVariable Long id) {
 
 		Pedido pedido = pedidoService.findById(id);
 		return ResponseEntity.ok().body(pedido);
@@ -30,24 +30,24 @@ public class PedidoController implements IGenericaController<Pedido> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Pedido>> listAll() {
 
 		List<Pedido> lista = pedidoService.listAll();
 		return ResponseEntity.ok().body(lista);
 	}
 
 	@Override
-	public ResponseEntity<Void> inserir(Pedido obj) {
+	public ResponseEntity<Void> insert(Pedido obj) {
 		return null;
 	}
 
 	@Override
-	public Pedido editar(Pedido obj) {
+	public ResponseEntity<Void> update(Long id, Pedido obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

@@ -32,17 +32,17 @@ public class BairroService implements IGenericaService<Bairro> {
 	}
 
 	@Override
-	public Bairro inserir(Bairro obj) {
+	public Bairro insert(Bairro obj) {
 		return null;
 	}
 
 	@Override
-	public Bairro editar(Bairro obj) {
+	public Bairro update(Bairro obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

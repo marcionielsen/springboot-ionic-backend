@@ -15,14 +15,14 @@ import br.com.marcionielsen.cursomc.services.ClienteService;
 
 @RestController
 @RequestMapping(value = "/clientes")
-public class ClienteController implements IGenericaController<Cliente> {
+public class ClienteController extends AbstrataController implements IGenericaController<Cliente> {
 
 	@Autowired
 	private ClienteService clienteService;
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> findById(@PathVariable Long id) {
+	public ResponseEntity<Cliente> findById(@PathVariable Long id) {
 
 		Cliente cliente = clienteService.findById(id);
 		return ResponseEntity.ok().body(cliente);
@@ -30,25 +30,24 @@ public class ClienteController implements IGenericaController<Cliente> {
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<?> listAll() {
+	public ResponseEntity<List<Cliente>> listAll() {
 
 		List<Cliente> lista = clienteService.listAll();
 		return ResponseEntity.ok().body(lista);
 	}
 
-
 	@Override
-	public ResponseEntity<Void> inserir(Cliente obj) {
+	public ResponseEntity<Void> insert(Cliente obj) {
 		return null;
 	}
 
 	@Override
-	public Cliente editar(Cliente obj) {
+	public ResponseEntity<Void> update(Long id, Cliente obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

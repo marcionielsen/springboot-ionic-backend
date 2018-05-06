@@ -32,17 +32,17 @@ public class FornecedorService implements IGenericaService<Fornecedor> {
 	}
 
 	@Override
-	public Fornecedor inserir(Fornecedor obj) {
+	public Fornecedor insert(Fornecedor obj) {
 		return null;
 	}
 
 	@Override
-	public Fornecedor editar(Fornecedor obj) {
+	public Fornecedor update(Fornecedor obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 
 	}
 

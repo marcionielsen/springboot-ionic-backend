@@ -32,17 +32,17 @@ public class PedidoService implements IGenericaService<Pedido> {
 	}
 
 	@Override
-	public Pedido inserir(Pedido obj) {
+	public Pedido insert(Pedido obj) {
 		return null;
 	}
 
 	@Override
-	public Pedido editar(Pedido obj) {
+	public Pedido update(Pedido obj) {
 		return null;
 	}
 
 	@Override
-	public void excluir(Long id) {
+	public void delete(Long id) {
 	}
 
 }
