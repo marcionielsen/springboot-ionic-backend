@@ -8,12 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Bairro;
+import br.com.marcionielsen.cursomc.dto.BairroDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IBairroRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class BairroService implements IGenericaService<Bairro> {
+public class BairroService implements IGenericaService<Bairro, BairroDTO> {
 
 	@Autowired
 	private IBairroRepository repo;
@@ -50,6 +51,11 @@ public class BairroService implements IGenericaService<Bairro> {
 	@Override
 	public void delete(Long id) {
 
+	}
+
+	@Override
+	public Bairro fromDTO(BairroDTO obj) {
+		return null;
 	}
 
 }

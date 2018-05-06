@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Vendedor;
+import br.com.marcionielsen.cursomc.dto.VendedorDTO;
 import br.com.marcionielsen.cursomc.services.VendedorService;
 
 @RestController
 @RequestMapping(value = "/vendedores")
-public class VendedorController extends AbstrataController implements IGenericaController<Vendedor> {
+public class VendedorController extends AbstrataController implements IGenericaController<Vendedor, VendedorDTO> {
 
 	@Autowired
 	private VendedorService vendedorService;
@@ -31,25 +33,27 @@ public class VendedorController extends AbstrataController implements IGenericaC
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<?>> listAll() {
+	public ResponseEntity<List<VendedorDTO>> listAll() {
 
 		List<Vendedor> lista = vendedorService.listAll();
-		return ResponseEntity.ok().body(lista);
+		
+		List<VendedorDTO> listaDTO = lista.stream().map(obj -> new VendedorDTO(obj)).collect(Collectors.toList());
 
+		return ResponseEntity.ok().body(listaDTO);
 	}
 
 	@Override
-	public ResponseEntity<Page<?>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
+	public ResponseEntity<Page<VendedorDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> insert(Vendedor obj) {
+	public ResponseEntity<Void> insert(VendedorDTO obj) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> update(Long id, Vendedor obj) {
+	public ResponseEntity<Void> update(Long id, VendedorDTO obj) {
 		return null;
 	}
 

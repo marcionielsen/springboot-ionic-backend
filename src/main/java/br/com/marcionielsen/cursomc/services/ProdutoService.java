@@ -8,12 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Produto;
+import br.com.marcionielsen.cursomc.dto.ProdutoDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IProdutoRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class ProdutoService implements IGenericaService<Produto> {
+public class ProdutoService implements IGenericaService<Produto, ProdutoDTO> {
 
 	@Autowired
 	private IProdutoRepository repo;
@@ -51,4 +52,9 @@ public class ProdutoService implements IGenericaService<Produto> {
 	public void delete(Long id) {
 	}
 
+	@Override
+	public Produto fromDTO(ProdutoDTO obj) {
+		return null;
+	}
+	
 }

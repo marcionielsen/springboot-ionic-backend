@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Cidade;
+import br.com.marcionielsen.cursomc.dto.CidadeDTO;
 import br.com.marcionielsen.cursomc.services.CidadeService;
 
 @RestController
 @RequestMapping(value = "/cidades")
-public class CidadeController extends AbstrataController implements IGenericaController<Cidade> {
+public class CidadeController extends AbstrataController implements IGenericaController<Cidade, CidadeDTO> {
 
 	@Autowired
 	private CidadeService cidadeService;
@@ -31,25 +33,27 @@ public class CidadeController extends AbstrataController implements IGenericaCon
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<?>> listAll() {
+	public ResponseEntity<List<CidadeDTO>> listAll() {
 
 		List<Cidade> lista = cidadeService.listAll();
-		return ResponseEntity.ok().body(lista);
 
+		List<CidadeDTO> listaDTO = lista.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(listaDTO);
 	}
 
 	@Override
-	public ResponseEntity<Page<?>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
+	public ResponseEntity<Page<CidadeDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> insert(Cidade obj) {
+	public ResponseEntity<Void> insert(CidadeDTO obj) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> update(Long id, Cidade obj) {
+	public ResponseEntity<Void> update(Long id, CidadeDTO obj) {
 		return null;
 	}
 

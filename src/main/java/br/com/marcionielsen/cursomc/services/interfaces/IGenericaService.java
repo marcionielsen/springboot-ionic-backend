@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-public interface IGenericaService<T> {
+public interface IGenericaService<T, D> {
 
 	public T findById(Long id);
 	
@@ -17,5 +17,7 @@ public interface IGenericaService<T> {
 	public T update(T obj);
 	
 	public void delete(Long id);
+	
+	public T fromDTO(D obj);
 	
 }

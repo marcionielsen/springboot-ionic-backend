@@ -11,13 +11,14 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Categoria;
+import br.com.marcionielsen.cursomc.dto.CategoriaDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICategoriaRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.IntegridadeDadosException;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class CategoriaService extends AbstrataService<Categoria> implements IGenericaService<Categoria> {
+public class CategoriaService extends AbstrataService<Categoria> implements IGenericaService<Categoria, CategoriaDTO> {
 
 	@Autowired
 	private ICategoriaRepository repo;
@@ -45,6 +46,7 @@ public class CategoriaService extends AbstrataService<Categoria> implements IGen
 
 	@Override
 	public Categoria insert(Categoria obj) {
+
 		obj.setId(null);
 
 		return repo.save(obj);
@@ -66,6 +68,11 @@ public class CategoriaService extends AbstrataService<Categoria> implements IGen
 		} catch (DataIntegrityViolationException e) {
 			throw new IntegridadeDadosException(id.toString(), Categoria.class.getName());
 		}
+	}
+
+	@Override
+	public Categoria fromDTO(CategoriaDTO obj) {
+		return new Categoria(obj.getId(), obj.getNome());
 	}
 
 }

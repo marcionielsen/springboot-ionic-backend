@@ -8,12 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Fornecedor;
+import br.com.marcionielsen.cursomc.dto.FornecedorDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IFornecedorRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class FornecedorService implements IGenericaService<Fornecedor> {
+public class FornecedorService implements IGenericaService<Fornecedor, FornecedorDTO> {
 
 	@Autowired
 	private IFornecedorRepository repo;
@@ -51,6 +52,11 @@ public class FornecedorService implements IGenericaService<Fornecedor> {
 	@Override
 	public void delete(Long id) {
 
+	}
+
+	@Override
+	public Fornecedor fromDTO(FornecedorDTO obj) {
+		return null;
 	}
 
 }

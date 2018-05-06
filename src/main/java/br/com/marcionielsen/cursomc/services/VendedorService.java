@@ -8,12 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.marcionielsen.cursomc.domain.Vendedor;
+import br.com.marcionielsen.cursomc.dto.VendedorDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IVendedorRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class VendedorService implements IGenericaService<Vendedor> {
+public class VendedorService implements IGenericaService<Vendedor, VendedorDTO> {
 
 	@Autowired
 	private IVendedorRepository repo;
@@ -52,4 +53,9 @@ public class VendedorService implements IGenericaService<Vendedor> {
 
 	}
 
+	@Override
+	public Vendedor fromDTO(VendedorDTO obj) {
+		return null;
+	}
+	
 }

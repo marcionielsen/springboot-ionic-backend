@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Produto;
+import br.com.marcionielsen.cursomc.dto.ProdutoDTO;
 import br.com.marcionielsen.cursomc.services.ProdutoService;
 
 @RestController
 @RequestMapping(value = "/produtos")
-public class ProdutoController extends AbstrataController implements IGenericaController<Produto> {
+public class ProdutoController extends AbstrataController implements IGenericaController<Produto, ProdutoDTO> {
 
 	@Autowired
 	private ProdutoService produtoService;
@@ -31,24 +33,27 @@ public class ProdutoController extends AbstrataController implements IGenericaCo
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<?>> listAll() {
+	public ResponseEntity<List<ProdutoDTO>> listAll() {
 
 		List<Produto> lista = produtoService.listAll();
-		return ResponseEntity.ok().body(lista);
+		
+		List<ProdutoDTO> listaDTO = lista.stream().map(obj -> new ProdutoDTO(obj)).collect(Collectors.toList());
+
+		return ResponseEntity.ok().body(listaDTO);
 	}
 
 	@Override
-	public ResponseEntity<Page<?>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
+	public ResponseEntity<Page<ProdutoDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> insert(Produto obj) {
+	public ResponseEntity<Void> insert(ProdutoDTO obj) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Void> update(Long id, Produto obj) {
+	public ResponseEntity<Void> update(Long id, ProdutoDTO obj) {
 		return null;
 	}
 

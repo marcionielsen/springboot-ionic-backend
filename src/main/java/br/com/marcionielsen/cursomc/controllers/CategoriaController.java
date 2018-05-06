@@ -3,6 +3,8 @@ package br.com.marcionielsen.cursomc.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ import br.com.marcionielsen.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
-public class CategoriaController extends AbstrataController implements IGenericaController<Categoria> {
+public class CategoriaController extends AbstrataController implements IGenericaController<Categoria, CategoriaDTO> {
 
 	@Autowired
 	private CategoriaService categoriaService;
@@ -35,7 +37,7 @@ public class CategoriaController extends AbstrataController implements IGenerica
 
 	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<?>> listAll() {
+	public ResponseEntity<List<CategoriaDTO>> listAll() {
 
 		List<Categoria> lista = categoriaService.listAll();
 
@@ -46,7 +48,7 @@ public class CategoriaController extends AbstrataController implements IGenerica
 
 	@Override
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<?>> listPerPage(@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
+	public ResponseEntity<Page<CategoriaDTO>> listPerPage(@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
@@ -60,17 +62,21 @@ public class CategoriaController extends AbstrataController implements IGenerica
 	
 	@Override
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
-		obj = categoriaService.insert(obj);
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
+		
+		Categoria obj = categoriaService.insert(categoriaService.fromDTO(objDTO));
 
 		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
 	}
 
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Categoria obj) {
-		obj.setId(id);
-		obj = categoriaService.update(obj);
+	public ResponseEntity<Void> update(@PathVariable Long id, 
+			@Valid @RequestBody CategoriaDTO objDTO) {
+		
+		objDTO.setId(id);
+		
+		categoriaService.update(categoriaService.fromDTO(objDTO));
 
 		return ResponseEntity.noContent().build();
 	}
