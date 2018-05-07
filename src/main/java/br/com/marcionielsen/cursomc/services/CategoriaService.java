@@ -54,8 +54,10 @@ public class CategoriaService extends AbstrataService<Categoria> implements IGen
 
 	@Override
 	public Categoria update(Categoria obj) {
-		findById(obj.getId());
-
+		Categoria newObj = findById(obj.getId());
+		
+		this.updateData(newObj, obj);
+		
 		return repo.save(obj);
 	}
 
@@ -75,4 +77,8 @@ public class CategoriaService extends AbstrataService<Categoria> implements IGen
 		return new Categoria(obj.getId(), obj.getNome());
 	}
 
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	}
+	
 }
