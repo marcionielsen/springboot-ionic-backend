@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
+import br.com.marcionielsen.cursomc.dto.ClienteDTO;
 
 @Entity
 @Table(name="CLIENTES", 
@@ -74,6 +75,13 @@ public class Cliente implements Serializable {
 		this.tipo = tipo.getCodigo();
 	}
 
+	public Cliente(ClienteDTO obj) {
+		super();		
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.email = obj.getEmail();		
+	}
+	
 	public Long getId() {
 		return id;
 	}
