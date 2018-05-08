@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Cliente;
 import br.com.marcionielsen.cursomc.dto.ClienteDTO;
+import br.com.marcionielsen.cursomc.dto.ClienteEnderecoTelefonesDTO;
 import br.com.marcionielsen.cursomc.services.ClienteService;
 
 @RestController
 @RequestMapping(value = "/clientes")
-public class ClienteController extends AbstrataController implements IGenericaController<Cliente, ClienteDTO> {
+public class ClienteController extends AbstrataController implements IGenericaController<Cliente, ClienteDTO, ClienteEnderecoTelefonesDTO> {
 
 	@Autowired
 	private ClienteService clienteService;
@@ -62,10 +63,13 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 	}
 
 	@Override
-	public ResponseEntity<Void> insert(ClienteDTO obj) {
-		return null;
-	}
+	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteEnderecoTelefonesDTO objDTO) {
+		Cliente obj = clienteService.insert(clienteService.fromDTO(objDTO));
 
+		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
+	}
+	
 	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ClienteDTO objDTO) {

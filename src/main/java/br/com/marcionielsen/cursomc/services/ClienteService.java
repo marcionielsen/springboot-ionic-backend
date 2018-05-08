@@ -1,5 +1,6 @@
 package br.com.marcionielsen.cursomc.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,9 +11,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.marcionielsen.cursomc.domain.Bairro;
+import br.com.marcionielsen.cursomc.domain.Cidade;
 import br.com.marcionielsen.cursomc.domain.Cliente;
+import br.com.marcionielsen.cursomc.domain.Endereco;
+import br.com.marcionielsen.cursomc.domain.Estado;
+import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
 import br.com.marcionielsen.cursomc.dto.ClienteDTO;
+import br.com.marcionielsen.cursomc.dto.ClienteEnderecoTelefonesDTO;
+import br.com.marcionielsen.cursomc.repositories.interfaces.ICidadeRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IClienteRepository;
+import br.com.marcionielsen.cursomc.repositories.interfaces.IEstadoRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.IntegridadeDadosException;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
@@ -22,6 +31,13 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 
 	@Autowired
 	private IClienteRepository repo;
+
+	@Autowired
+	private ICidadeRepository repoCidade;
+
+	@Autowired
+	private IEstadoRepository repoUF;
+
 
 	@Override
 	public Cliente findById(Long id) {
@@ -46,15 +62,17 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 
 	@Override
 	public Cliente insert(Cliente obj) {
-		return null;
+		obj.setId(null);
+
+		return repo.save(obj);
 	}
 
 	@Override
 	public Cliente update(Cliente obj) {
 		Cliente newObj = findById(obj.getId());
-		
+
 		updateData(newObj, obj);
-		
+
 		return repo.save(newObj);
 	}
 
@@ -72,6 +90,33 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 	@Override
 	public Cliente fromDTO(ClienteDTO obj) {
 		return new Cliente(obj);
+	}
+
+	public Cliente fromDTO(ClienteEnderecoTelefonesDTO obj) {
+		// Criando o Cliente
+		Cliente cli = new Cliente(null,obj.getNome(), obj.getEmail(), obj.getCep(),TipoCliente.toEnum(obj.getTipo()) );
+		
+		// Criando a UF, a Cidade e o Bairro 
+		Estado uf = new Estado(obj.getEstado(), null, null);
+		Cidade cidade = new Cidade(obj.getCidade(), null, uf);
+		Bairro bairro = new Bairro(obj.getBairro(), null, cidade);
+
+		// Ligando a Cidade ao UF
+		uf.getCidades().addAll(Arrays.asList(cidade));
+		
+		// Ligando o Bairro à Cidade
+		cidade.getBairros().addAll(Arrays.asList(bairro));
+		
+		// Criando o Endereço do Cliente
+		Endereco ende = new Endereco(null, obj.getLogradouro(), obj.getNumero(), obj.getComplemento(), obj.getCep(), bairro, cli, null);
+				
+		// Ligando o Endereço ao Cliente
+		cli.getEnderecos().addAll(Arrays.asList(ende));
+		
+	    // Limpando o Set Original de Telefones (eliminando valores NULOS) e ligando os telefones ao Cliente
+		obj.getTelefones().stream().filter(telefoneOri -> telefoneOri != null && !"".equals(telefoneOri)).forEach(telefoneOri -> cli.getTelefones().add(telefoneOri));
+		
+		return cli;
 	}
 
 	private void updateData(Cliente newObj, Cliente obj) {
