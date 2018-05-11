@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Fornecedor;
 import br.com.marcionielsen.cursomc.dto.FornecedorDTO;
 import br.com.marcionielsen.cursomc.services.FornecedorService;
 
 @RestController
 @RequestMapping(value = "/fornecedores")
-public class FornecedorController extends AbstrataController implements IGenericaController<Fornecedor, FornecedorDTO> {
+public class FornecedorController extends AbstrataController {
 
 	@Autowired
 	private FornecedorService fornecedorService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Fornecedor> findById(@PathVariable Long id) {
 
@@ -31,7 +29,6 @@ public class FornecedorController extends AbstrataController implements IGeneric
 		return ResponseEntity.ok().body(fornecedor);
 	}
 
-	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<List<FornecedorDTO>> listAll() {
 
@@ -42,22 +39,18 @@ public class FornecedorController extends AbstrataController implements IGeneric
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
-	@Override
 	public ResponseEntity<Page<FornecedorDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> insert(FornecedorDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> update(Long id, FornecedorDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> delete(Long id) {
 		return null;
 	}

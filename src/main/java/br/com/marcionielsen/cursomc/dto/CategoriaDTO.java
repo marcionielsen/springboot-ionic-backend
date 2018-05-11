@@ -1,14 +1,12 @@
 package br.com.marcionielsen.cursomc.dto;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
 import br.com.marcionielsen.cursomc.domain.Categoria;
 
-public class CategoriaDTO implements Serializable {
+public class CategoriaDTO extends AbstrataDTO {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;

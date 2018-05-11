@@ -8,9 +8,11 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-public class ClienteEnderecoTelefonesDTO extends AbastractDTO {
+public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 	private static final long serialVersionUID = 1L;
 
+	private Long id;
+	
 	@NotEmpty(message = "O preenchimento do campo nome é obrigatório!")
 	@Length(min = 5, max = 150, message = "O tamanho do nome deve estar entre 5 e 150 caracteres!")
 	private String nome;
@@ -29,11 +31,18 @@ public class ClienteEnderecoTelefonesDTO extends AbastractDTO {
 	private Long bairro;
 	private Long cidade;
 	private Long estado;
-
 	private Set<String> telefones = new HashSet<>();
 	
 	public ClienteEnderecoTelefonesDTO() {
 		super();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {

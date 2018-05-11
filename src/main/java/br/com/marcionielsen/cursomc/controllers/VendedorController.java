@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Vendedor;
 import br.com.marcionielsen.cursomc.dto.VendedorDTO;
 import br.com.marcionielsen.cursomc.services.VendedorService;
 
 @RestController
 @RequestMapping(value = "/vendedores")
-public class VendedorController extends AbstrataController implements IGenericaController<Vendedor, VendedorDTO> {
+public class VendedorController extends AbstrataController {
 
 	@Autowired
 	private VendedorService vendedorService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Vendedor> findById(@PathVariable Long id) {
 
@@ -31,7 +29,6 @@ public class VendedorController extends AbstrataController implements IGenericaC
 		return ResponseEntity.ok().body(vendedor);
 	}
 
-	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<List<VendedorDTO>> listAll() {
 
@@ -42,22 +39,18 @@ public class VendedorController extends AbstrataController implements IGenericaC
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
-	@Override
 	public ResponseEntity<Page<VendedorDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> insert(VendedorDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> update(Long id, VendedorDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> delete(Long id) {
 		return null;
 	}

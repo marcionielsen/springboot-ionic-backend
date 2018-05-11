@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Bairro;
 import br.com.marcionielsen.cursomc.dto.BairroDTO;
 import br.com.marcionielsen.cursomc.services.BairroService;
 
 @RestController
 @RequestMapping(value = "/bairros")
-public class BairroController extends AbstrataController implements IGenericaController<Bairro, BairroDTO> {
+public class BairroController extends AbstrataController {
 
 	@Autowired
 	private BairroService bairroService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Bairro> findById(@PathVariable Long id) {
 
@@ -31,7 +29,6 @@ public class BairroController extends AbstrataController implements IGenericaCon
 		return ResponseEntity.ok().body(bairro);
 	}
 
-	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<List<BairroDTO>> listAll() {
 
@@ -43,23 +40,19 @@ public class BairroController extends AbstrataController implements IGenericaCon
 
 	}
 
-	@Override
 	public ResponseEntity<Page<BairroDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy,
 			String direction) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> insert(BairroDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> update(Long id, BairroDTO obj) {
 		return null;
 	}
 
-	@Override
 	public ResponseEntity<Void> delete(Long id) {
 		return null;
 	}

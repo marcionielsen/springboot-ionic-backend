@@ -15,20 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Cliente;
+import br.com.marcionielsen.cursomc.dto.AbstrataDTO;
 import br.com.marcionielsen.cursomc.dto.ClienteDTO;
 import br.com.marcionielsen.cursomc.dto.ClienteEnderecoTelefonesDTO;
 import br.com.marcionielsen.cursomc.services.ClienteService;
 
 @RestController
 @RequestMapping(value = "/clientes")
-public class ClienteController extends AbstrataController implements IGenericaController<Cliente, ClienteDTO, ClienteEnderecoTelefonesDTO> {
+public class ClienteController extends AbstrataController {
 
 	@Autowired
 	private ClienteService clienteService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> findById(@PathVariable Long id) {
 
@@ -36,9 +35,8 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 		return ResponseEntity.ok().body(cliente);
 	}
 
-	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public ResponseEntity<List<ClienteDTO>> listAll() {
+	public ResponseEntity<List<? extends AbstrataDTO>> listAll() {
 
 		List<Cliente> lista = clienteService.listAll();
 
@@ -47,9 +45,8 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
-	@Override
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<ClienteDTO>> listPerPage(
+	public ResponseEntity<Page<? extends AbstrataDTO>> listPerPage(
 			@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
@@ -62,17 +59,17 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
-	@Override
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteEnderecoTelefonesDTO objDTO) {
-		Cliente obj = clienteService.insert(clienteService.fromDTO(objDTO));
+
+		objDTO.setId(null);
+		Cliente obj = clienteService.insert(clienteService.fromDTO(objDTO ));
 
 		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
 	}
 	
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ClienteDTO objDTO) {
+	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ClienteEnderecoTelefonesDTO  objDTO) {
 
 		objDTO.setId(id);
 
@@ -81,7 +78,6 @@ public class ClienteController extends AbstrataController implements IGenericaCo
 		return ResponseEntity.noContent().build();
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		clienteService.delete(id);

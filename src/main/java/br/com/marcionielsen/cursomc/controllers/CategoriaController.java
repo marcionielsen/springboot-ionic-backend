@@ -15,19 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcionielsen.cursomc.controllers.interfaces.IGenericaController;
 import br.com.marcionielsen.cursomc.domain.Categoria;
 import br.com.marcionielsen.cursomc.dto.CategoriaDTO;
 import br.com.marcionielsen.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
-public class CategoriaController extends AbstrataController implements IGenericaController<Categoria, CategoriaDTO> {
+public class CategoriaController extends AbstrataController {
 
 	@Autowired
 	private CategoriaService categoriaService;
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Categoria> findById(@PathVariable Long id) {
 
@@ -35,7 +33,6 @@ public class CategoriaController extends AbstrataController implements IGenerica
 		return ResponseEntity.ok().body(categoria);
 	}
 
-	@Override
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> listAll() {
 
@@ -46,9 +43,9 @@ public class CategoriaController extends AbstrataController implements IGenerica
 		return ResponseEntity.ok().body(listaDTO);
 	}
 
-	@Override
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<CategoriaDTO>> listPerPage(@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
+	public ResponseEntity<Page<CategoriaDTO>> listPerPage(
+			@RequestParam(value = "numPage", defaultValue = "0") Integer numPage,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
@@ -59,29 +56,25 @@ public class CategoriaController extends AbstrataController implements IGenerica
 
 		return ResponseEntity.ok().body(listaDTO);
 	}
-	
-	@Override
+
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
-		
+
 		Categoria obj = categoriaService.insert(categoriaService.fromDTO(objDTO));
 
 		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Long id, 
-			@Valid @RequestBody CategoriaDTO objDTO) {
-		
+	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CategoriaDTO objDTO) {
+
 		objDTO.setId(id);
-		
+
 		categoriaService.update(categoriaService.fromDTO(objDTO));
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@Override
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		categoriaService.delete(id);

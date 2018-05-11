@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import br.com.marcionielsen.cursomc.domain.Cliente;
 
-public class ClienteDTO extends AbastractDTO {
+public class ClienteDTO extends AbstrataDTO {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;

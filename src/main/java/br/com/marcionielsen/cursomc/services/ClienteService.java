@@ -21,6 +21,7 @@ import br.com.marcionielsen.cursomc.dto.ClienteDTO;
 import br.com.marcionielsen.cursomc.dto.ClienteEnderecoTelefonesDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICidadeRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IClienteRepository;
+import br.com.marcionielsen.cursomc.repositories.interfaces.IEnderecoRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IEstadoRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.IntegridadeDadosException;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
@@ -31,6 +32,9 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 
 	@Autowired
 	private IClienteRepository repo;
+
+	@Autowired
+	private IEnderecoRepository repoEndereco;
 
 	@Autowired
 	private ICidadeRepository repoCidade;
@@ -63,8 +67,12 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 	@Override
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-
-		return repo.save(obj);
+		
+		obj = repo.save(obj);
+		
+		repoEndereco.saveAll(obj.getEnderecos());
+		
+		return obj;
 	}
 
 	@Override
@@ -94,11 +102,13 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 
 	public Cliente fromDTO(ClienteEnderecoTelefonesDTO obj) {
 		// Criando o Cliente
-		Cliente cli = new Cliente(null,obj.getNome(), obj.getEmail(), obj.getCep(),TipoCliente.toEnum(obj.getTipo()) );
+		Cliente cli = new Cliente(obj.getId(),obj.getNome(), obj.getEmail(), obj.getCep(),TipoCliente.toEnum(obj.getTipo()) );
 		
 		// Criando a UF, a Cidade e o Bairro 
-		Estado uf = new Estado(obj.getEstado(), null, null);
-		Cidade cidade = new Cidade(obj.getCidade(), null, uf);
+		Estado uf = repoUF.findById(obj.getEstado()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getEstado().toString(), Estado.class.getName()));
+		
+		Cidade cidade = repoCidade.findById(obj.getCidade()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getCidade().toString(), Cidade.class.getName()));
+		??????????
 		Bairro bairro = new Bairro(obj.getBairro(), null, cidade);
 
 		// Ligando a Cidade ao UF
@@ -119,6 +129,11 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 		return cli;
 	}
 
+	public Cliente fromEntity(Cliente Obj) {
+		
+		return Obj;		
+	}
+	
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());

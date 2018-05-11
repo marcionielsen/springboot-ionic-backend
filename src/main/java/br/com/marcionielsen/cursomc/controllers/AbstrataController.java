@@ -8,6 +8,19 @@ import br.com.marcionielsen.cursomc.util.Util;
 
 public abstract class AbstrataController {
 
+//	public abstract  <T> ResponseEntity<T> findById(Long id);
+//
+//	public abstract  ResponseEntity<List<? extends AbstrataDTO>> listAll();
+//
+//	public abstract ResponseEntity<Page<? extends AbstrataDTO>> listPerPage(Integer numPage, Integer linesPage, String orderBy,
+//			String direction);
+//			
+//	public abstract ResponseEntity<Void> delete(Long id);
+//
+//	public abstract <D> ResponseEntity<Void> insert(@Valid D objDTO);
+//
+//	public abstract <F> ResponseEntity<Void> update(Long id, @Valid F objDTO);
+	
 	protected URI getNovaUri(String elementoRemover, String novoElemento) {
 		String uriOri = ServletUriComponentsBuilder.fromCurrentRequest().toUriString();
 
@@ -26,4 +39,5 @@ public abstract class AbstrataController {
 		return novaUri;
 	}
 
+	
 }
