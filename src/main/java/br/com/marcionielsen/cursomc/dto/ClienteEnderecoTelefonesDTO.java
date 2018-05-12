@@ -8,6 +8,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.marcionielsen.cursomc.services.validation.annotations.IsCpfCnpjValid;
+
+@IsCpfCnpjValid
 public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 	private static final long serialVersionUID = 1L;
 
@@ -21,16 +24,28 @@ public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 	@Email(message = "O Email informado, não corresponde ao padrão aceitavél!")
 	private String email;
 
+	@NotEmpty(message = "O preenchimento do campo CPF/CNPJ é obrigatório!")
 	private String cpfCnpj;
+
 	private Integer tipo;
 
+	@NotEmpty(message = "O preenchimento do campo logradouro é obrigatório!")
 	private String logradouro;
+	
+	@NotEmpty(message = "O preenchimento do campo número é obrigatório!")
 	private String numero;
+
 	private String complemento;
+	
+	@NotEmpty(message = "O preenchimento do campo CEP é obrigatório!")
 	private String cep;
-	private Long bairro;
-	private Long cidade;
+	
+	private String nomeBairro;
+	
+	private String nomeCidade;
+	
 	private Long estado;
+	
 	private Set<String> telefones = new HashSet<>();
 	
 	public ClienteEnderecoTelefonesDTO() {
@@ -109,20 +124,20 @@ public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 		this.cep = cep;
 	}
 
-	public Long getBairro() {
-		return bairro;
+	public String getNomeBairro() {
+		return nomeBairro;
 	}
 
-	public void setBairro(Long bairro) {
-		this.bairro = bairro;
+	public void setNomeBairro(String nomeBairro) {
+		this.nomeBairro = nomeBairro;
 	}
 
-	public Long getCidade() {
-		return cidade;
+	public String getNomeCidade() {
+		return nomeCidade;
 	}
 
-	public void setCidade(Long nomeCidade) {
-		this.cidade = nomeCidade;
+	public void setNomeCidade(String nomeCidade) {
+		this.nomeCidade = nomeCidade;
 	}
 
 	public Long getEstado() {

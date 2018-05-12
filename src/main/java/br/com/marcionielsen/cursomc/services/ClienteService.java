@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,6 +20,7 @@ import br.com.marcionielsen.cursomc.domain.Estado;
 import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
 import br.com.marcionielsen.cursomc.dto.ClienteDTO;
 import br.com.marcionielsen.cursomc.dto.ClienteEnderecoTelefonesDTO;
+import br.com.marcionielsen.cursomc.repositories.interfaces.IBairroRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICidadeRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IClienteRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IEnderecoRepository;
@@ -34,6 +36,9 @@ public class ClienteService  {
 
 	@Autowired
 	private IEnderecoRepository repoEndereco;
+
+	@Autowired
+	private IBairroRepository repoBairro;
 
 	@Autowired
 	private ICidadeRepository repoCidade;
@@ -77,6 +82,8 @@ public class ClienteService  {
 
 		Cliente saveObj = repo.save(newObj);
 		
+		repoEndereco.saveAll(saveObj.getEnderecos());
+		
 		return saveObj;
 	}
 
@@ -100,10 +107,18 @@ public class ClienteService  {
 		
 		// Criando a UF, a Cidade e o Bairro 
 		Estado uf = repoUF.findById(obj.getEstado()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getEstado().toString(), Estado.class.getName()));
+				
+		Cidade cidex = new Cidade();
+		//cidex.setEstado(uf);
+		cidex.setNome(obj.getNomeCidade());
 		
-		Cidade cidade = repoCidade.findById(obj.getCidade()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getCidade().toString(), Cidade.class.getName()));
+		Cidade cidade = repoCidade.findOne(Example.of(cidex)).orElse(new Cidade(null, obj.getNomeCidade(), uf));
 		
-		Bairro bairro = new Bairro(obj.getBairro(), null, cidade);
+		Bairro bairex = new Bairro();
+		//bairex.setCidade(cidade);
+		bairex.setNome(obj.getNomeBairro());
+		
+		Bairro bairro = repoBairro.findOne(Example.of(bairex)).orElse(new Bairro(null, obj.getNomeBairro(), cidade)); 
 
 		// Ligando a Cidade ao UF
 		uf.getCidades().addAll(Arrays.asList(cidade));
@@ -112,8 +127,17 @@ public class ClienteService  {
 		cidade.getBairros().addAll(Arrays.asList(bairro));
 		
 		// Criando o Endereço do Cliente
-		Endereco ende = new Endereco(null, obj.getLogradouro(), obj.getNumero(), obj.getComplemento(), obj.getCep(), bairro, cli, null);
-				
+
+		Endereco endex = new Endereco();
+		endex.setLogradouro(obj.getLogradouro());
+		endex.setNumero(obj.getNumero());
+		endex.setComplemento(obj.getComplemento());
+		endex.setCep(obj.getCep());
+		endex.setFornecedor(null);
+		endex.setCliente(cli);
+	   
+		Endereco ende = repoEndereco.findOne(Example.of(endex)).orElse(new Endereco(null, obj.getLogradouro(), obj.getNumero(), obj.getComplemento(), obj.getCep(), bairro, cli, null));
+		
 		// Ligando o Endereço ao Cliente
 		cli.getEnderecos().addAll(Arrays.asList(ende));
 		

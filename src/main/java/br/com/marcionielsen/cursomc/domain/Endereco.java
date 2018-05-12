@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ENDERECOS", indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
-		@Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP", unique = true) })
+		@Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP, CD_CLIENTE, CD_FORNECEDOR", unique = true) })
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
