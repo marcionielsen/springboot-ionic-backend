@@ -62,20 +62,17 @@ public class ClienteController extends AbstrataController {
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteEnderecoTelefonesDTO objDTO) {
 
-		objDTO.setId(null);
-		Cliente obj = clienteService.insert(clienteService.fromDTO(objDTO ));
+		Cliente obj = clienteService.insert(objDTO);
 
 		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ClienteEnderecoTelefonesDTO  objDTO) {
+	@RequestMapping(value = "/editar", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteEnderecoTelefonesDTO  objDTO) {
 
-		objDTO.setId(id);
+		Cliente obj = clienteService.update(objDTO);
 
-		clienteService.update(clienteService.fromDTO(objDTO));
-
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.created(super.getNovaUri("editar", "/" + obj.getId().toString())).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

@@ -60,19 +60,17 @@ public class CategoriaController extends AbstrataController {
 	@RequestMapping(value = "/inserir", method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
 
-		Categoria obj = categoriaService.insert(categoriaService.fromDTO(objDTO));
+		Categoria obj = categoriaService.insert(objDTO);
 
 		return ResponseEntity.created(super.getNovaUri("inserir", "/" + obj.getId().toString())).build();
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody CategoriaDTO objDTO) {
+	@RequestMapping(value = "/editar", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO) {
 
-		objDTO.setId(id);
+		Categoria obj = categoriaService.update(objDTO);
 
-		categoriaService.update(categoriaService.fromDTO(objDTO));
-
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.created(super.getNovaUri("editar", "/" + obj.getId().toString())).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

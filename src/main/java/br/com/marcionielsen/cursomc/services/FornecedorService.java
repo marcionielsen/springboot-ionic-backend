@@ -11,15 +11,13 @@ import br.com.marcionielsen.cursomc.domain.Fornecedor;
 import br.com.marcionielsen.cursomc.dto.FornecedorDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IFornecedorRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
-import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class FornecedorService implements IGenericaService<Fornecedor, FornecedorDTO> {
+public class FornecedorService {
 
 	@Autowired
 	private IFornecedorRepository repo;
 
-	@Override
 	public Fornecedor findById(Long id) {
 		Optional<Fornecedor> fornecedor = repo.findById(id);
 
@@ -27,34 +25,28 @@ public class FornecedorService implements IGenericaService<Fornecedor, Fornecedo
 				.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Fornecedor.class.getName()));
 	}
 
-	@Override
 	public List<Fornecedor> listAll() {
 		List<Fornecedor> lista = repo.findAll();
 
 		return lista;
 	}
 
-	@Override
 	public Page<Fornecedor> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
 		return null;
 	}
 
-	@Override
 	public Fornecedor insert(Fornecedor obj) {
 		return null;
 	}
 
-	@Override
 	public Fornecedor update(Fornecedor obj) {
 		return null;
 	}
 
-	@Override
 	public void delete(Long id) {
 
 	}
 
-	@Override
 	public Fornecedor fromDTO(FornecedorDTO obj) {
 		return null;
 	}

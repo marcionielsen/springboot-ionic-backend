@@ -25,10 +25,9 @@ import br.com.marcionielsen.cursomc.repositories.interfaces.IEnderecoRepository;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IEstadoRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.IntegridadeDadosException;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
-import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
+public class ClienteService  {
 
 	@Autowired
 	private IClienteRepository repo;
@@ -43,48 +42,44 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 	private IEstadoRepository repoUF;
 
 
-	@Override
 	public Cliente findById(Long id) {
 		Optional<Cliente> cliente = repo.findById(id);
 
 		return cliente.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Cliente.class.getName()));
 	}
 
-	@Override
 	public List<Cliente> listAll() {
 		List<Cliente> lista = repo.findAll();
 
 		return lista;
 	}
 
-	@Override
 	public Page<Cliente> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(numPage, numLines, Direction.valueOf(direction), orderBy);
 
 		return repo.findAll(pageRequest);
 	}
 
-	@Override
-	public Cliente insert(Cliente obj) {
-		obj.setId(null);
+	public Cliente insert(ClienteEnderecoTelefonesDTO obj) {
+
+		Cliente newObj = repo.save(fromDTO(obj));
 		
-		obj = repo.save(obj);
+		repoEndereco.saveAll(newObj.getEnderecos());
 		
-		repoEndereco.saveAll(obj.getEnderecos());
-		
-		return obj;
+		return newObj;
 	}
 
-	@Override
-	public Cliente update(Cliente obj) {
-		Cliente newObj = findById(obj.getId());
+	public Cliente update(ClienteEnderecoTelefonesDTO obj) {
+		
+		Cliente newObj = this.findById(obj.getId());
 
-		updateData(newObj, obj);
+		updateData(newObj, fromDTO(obj));
 
-		return repo.save(newObj);
+		Cliente saveObj = repo.save(newObj);
+		
+		return saveObj;
 	}
 
-	@Override
 	public void delete(Long id) {
 		findById(id);
 
@@ -95,20 +90,19 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 		}
 	}
 
-	@Override
 	public Cliente fromDTO(ClienteDTO obj) {
 		return new Cliente(obj);
 	}
 
 	public Cliente fromDTO(ClienteEnderecoTelefonesDTO obj) {
 		// Criando o Cliente
-		Cliente cli = new Cliente(obj.getId(),obj.getNome(), obj.getEmail(), obj.getCep(),TipoCliente.toEnum(obj.getTipo()) );
+		Cliente cli = new Cliente(obj.getId(),obj.getNome(), obj.getEmail(), obj.getCpfCnpj(),TipoCliente.toEnum(obj.getTipo()) );
 		
 		// Criando a UF, a Cidade e o Bairro 
 		Estado uf = repoUF.findById(obj.getEstado()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getEstado().toString(), Estado.class.getName()));
 		
 		Cidade cidade = repoCidade.findById(obj.getCidade()).orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getCidade().toString(), Cidade.class.getName()));
-		??????????
+		
 		Bairro bairro = new Bairro(obj.getBairro(), null, cidade);
 
 		// Ligando a Cidade ao UF
@@ -137,5 +131,10 @@ public class ClienteService implements IGenericaService<Cliente, ClienteDTO> {
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
+		newObj.setCpfCnpj(obj.getCpfCnpj());
+		newObj.setTipo(obj.getTipo());
+		
+		newObj.setEnderecos(obj.getEnderecos());
+		newObj.setTelefones(obj.getTelefones());
 	}
 }

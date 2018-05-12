@@ -11,49 +11,41 @@ import br.com.marcionielsen.cursomc.domain.Vendedor;
 import br.com.marcionielsen.cursomc.dto.VendedorDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.IVendedorRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
-import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class VendedorService implements IGenericaService<Vendedor, VendedorDTO> {
+public class VendedorService {
 
 	@Autowired
 	private IVendedorRepository repo;
 
-	@Override
 	public Vendedor findById(Long id) {
 		Optional<Vendedor> vendedor = repo.findById(id);
 
 		return vendedor.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Vendedor.class.getName()));
 	}
 
-	@Override
 	public List<Vendedor> listAll() {
 		List<Vendedor> lista = repo.findAll();
 
 		return lista;
 	}
 
-	@Override
 	public Page<Vendedor> listPerPage(Integer numPage, Integer numLines, String orderBy, String direction) {
 		return null;
 	}
 
-	@Override
 	public Vendedor insert(Vendedor obj) {
 		return null;
 	}
 
-	@Override
 	public Vendedor update(Vendedor obj) {
 		return null;
 	}
 
-	@Override
 	public void delete(Long id) {
 
 	}
 
-	@Override
 	public Vendedor fromDTO(VendedorDTO obj) {
 		return null;
 	}

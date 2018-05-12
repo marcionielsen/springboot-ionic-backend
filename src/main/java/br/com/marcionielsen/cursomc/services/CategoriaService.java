@@ -15,53 +15,49 @@ import br.com.marcionielsen.cursomc.dto.CategoriaDTO;
 import br.com.marcionielsen.cursomc.repositories.interfaces.ICategoriaRepository;
 import br.com.marcionielsen.cursomc.services.exceptions.IntegridadeDadosException;
 import br.com.marcionielsen.cursomc.services.exceptions.ObjetoNaoEncontradoException;
-import br.com.marcionielsen.cursomc.services.interfaces.IGenericaService;
 
 @Service
-public class CategoriaService extends AbstrataService<Categoria> implements IGenericaService<Categoria, CategoriaDTO> {
+public class CategoriaService {
 
 	@Autowired
 	private ICategoriaRepository repo;
 
-	@Override
 	public Categoria findById(Long id) {
 		Optional<Categoria> categoria = repo.findById(id);
 
 		return categoria.orElseThrow(() -> new ObjetoNaoEncontradoException(id.toString(), Categoria.class.getName()));
 	}
 
-	@Override
 	public List<Categoria> listAll() {
 		List<Categoria> lista = repo.findAll();
 
 		return lista;
 	}
 
-	@Override
 	public Page<Categoria> listPerPage(Integer numPage, Integer linesPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(numPage, linesPage, Direction.valueOf(direction), orderBy);
 
 		return repo.findAll(pageRequest);
 	}
 
-	@Override
-	public Categoria insert(Categoria obj) {
+	public Categoria insert(CategoriaDTO obj) {
 
-		obj.setId(null);
-
-		return repo.save(obj);
+		Categoria newObj = repo.save(fromDTO(obj));
+		
+		return newObj;
 	}
 
-	@Override
-	public Categoria update(Categoria obj) {
-		Categoria newObj = findById(obj.getId());
+	public Categoria update(CategoriaDTO obj) {
 		
-		this.updateData(newObj, obj);
+		Categoria newObj = this.findById(obj.getId());
+
+		this.updateData(newObj, fromDTO(obj));
+
+		Categoria saveObj = repo.save(newObj);
 		
-		return repo.save(obj);
+		return saveObj;
 	}
 
-	@Override
 	public void delete(Long id) {
 		findById(id);
 
@@ -72,7 +68,6 @@ public class CategoriaService extends AbstrataService<Categoria> implements IGen
 		}
 	}
 
-	@Override
 	public Categoria fromDTO(CategoriaDTO obj) {
 		return new Categoria(obj.getId(), obj.getNome());
 	}
