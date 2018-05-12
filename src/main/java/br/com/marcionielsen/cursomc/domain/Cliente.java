@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -25,8 +26,7 @@ import br.com.marcionielsen.cursomc.domain.enums.TipoCliente;
 import br.com.marcionielsen.cursomc.dto.ClienteDTO;
 
 @Entity
-@Table(name="CLIENTES", 
-       indexes = { @Index(name = "UK_NM_CLIENTE", columnList = "NM_CLIENTE", unique = true),
+@Table(name = "CLIENTES", indexes = { @Index(name = "UK_NM_CLIENTE", columnList = "NM_CLIENTE", unique = true),
 		@Index(name = "UK_CD_CPF_CNPJ_CLIENTE", columnList = "CD_CPF_CNPJ_CLIENTE", unique = true),
 		@Index(name = "IDX_NM_CLIENTE", columnList = "NM_CLIENTE", unique = false),
 		@Index(name = "IDX_CD_CPF_CNPJ_CLIENTE", columnList = "CD_CPF_CNPJ_CLIENTE", unique = false) })
@@ -34,34 +34,33 @@ public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="CD_CLIENTE")
+	@Column(name = "CD_CLIENTE")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "NM_CLIENTE", nullable = false)
 	private String nome;
-	
+
 	@Column(name = "DS_EMAIL_CLIENTE", nullable = true)
 	private String email;
-	
+
 	@Column(name = "CD_CPF_CNPJ_CLIENTE", nullable = false)
 	private String cpfCnpj;
 
 	@Column(name = "CD_TIPO_PESSOA", nullable = false)
 	private Integer tipo;
 
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name="TELEFONES_CLIENTE", joinColumns = @JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName="CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), 
-	           foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE") )
+	@CollectionTable(name = "TELEFONES_CLIENTE", joinColumns = @JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE"))
 	private Set<String> telefones = new HashSet<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
+
 	public Cliente() {
 		super();
 	}
@@ -76,12 +75,12 @@ public class Cliente implements Serializable {
 	}
 
 	public Cliente(ClienteDTO obj) {
-		super();		
+		super();
 		this.id = obj.getId();
 		this.nome = obj.getNome();
-		this.email = obj.getEmail();		
+		this.email = obj.getEmail();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -145,7 +144,7 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -182,5 +181,5 @@ public class Cliente implements Serializable {
 				+ "-" + TipoCliente.toEnum(tipo).getDescricao() + ", enderecos=" + enderecos + ", telefones="
 				+ telefones + "]";
 	}
-	
+
 }
