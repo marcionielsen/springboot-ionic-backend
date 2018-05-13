@@ -237,6 +237,16 @@ public class ClienteService {
 
 		System.out.println("    -->> Executando pesquisa no H2DB --> nomeBairro: " + obj.getNomeBairro()
 				+ " - cidadeId: " + cidade.getId());
+		Bairro bairro = repoBairro.findOne(exBairro).orElse(new Bairro(null, obj.getNomeBairro(), cidade));
+
+		// findByNomeAndCidadeId(obj.getNomeBairro(), cidade.getId())
+		// .orElse(new Bairro(null, obj.getNomeBairro(), cidade));
+
+		System.out.println("\nBAIRRO = " + bairro.getId().toString() + " - " + bairro.getNome() + " - "
+				+ bairro.getCidade().getNome());
+
+		System.out.println("    -->> Executando pesquisa no H2DB --> nomeBairro: " + obj.getNomeBairro()
+				+ " - cidadeId: " + cidade.getId());
 		System.out.println("//--------------------------------------");
 		Bairro bairro = repoBairro.findOne(exBairro).orElse(new Bairro(null, obj.getNomeBairro(), cidade));
 
@@ -311,7 +321,39 @@ public class ClienteService {
 		System.out.println("\n");
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(">>-->> Ligando o Endereço ao Cliente");
+
+		Example<Endereco> exEndereco = Example.of(endex, exmtEndereco);
+
+		System.out.println("    -->> Executando pesquisa no H2DB --> logradouro: " + obj.getLogradouro() + " - numero: " + obj.getNumero() + " - cep: " + obj.getCep());
+		Endereco ende = repoEndereco.findOne(exEndereco).orElse(new Endereco(null, obj.getLogradouro(), obj.getNumero(),
+				obj.getComplemento(), obj.getCep(), bairro, cli, null));
+
+//				.orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getLogradouro() + " - " + obj.getNumero() + " - " + obj.getCep(),
+//				 Endereco.class.getName()));
+
+
+		// .findByLogradAndNumAndCepAndClienteId(obj.getLogradouro(), obj.getNumero(),
+		// obj.getCep(), cli.getId())
+		// .orElse(new Endereco(null, obj.getLogradouro(), obj.getNumero(),
+		// obj.getComplemento(), obj.getCep(),
+		// bairro, cli, null));
+
+		ende.setCliente(cli);
 		
+		System.out.println("\nENDERECO = " + 
+		                   "\n - logradouro: " + ende.getLogradouro() +
+				           "\n - numero: " + ende.getNumero() +
+				           "\n - complemento: " + ende.getComplemento() + 
+ 				           "\n - cep: " +  ende.getCep() + 
+				           "\n - bairro: " + ende.getBairro().getNome() + 
+				           "\n - cidade: " + ende.getBairro().getCidade().getNome() + 
+				           "\n - UF: " + ende.getBairro().getCidade().getEstado().getNome() 
+//				           + "\n - Cliente: " + ende.getCliente().getId().toString() + " - " + ende.getCliente().getNome() 
+				 );
+
+		System.out.println("\n");
+		System.out.println("//----------------------------------------------------------------------------");
+		System.out.println(">>-->> Ligando o Endereço ao Cliente");
 		// Ligando o Endereço ao Cliente
 		cli.getEnderecos().addAll(Arrays.asList(ende));
 
