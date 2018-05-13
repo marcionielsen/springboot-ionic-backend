@@ -187,7 +187,7 @@ public class CursomcApplication implements CommandLineRunner {
 		Bairro b14 = new Bairro(null, "BAIRRO INDUSTRIAL", c10);
 
 		Cliente cli1 = new Cliente(null, "Márcio Nielsen Baptista", "marcio.nielsen@gmail.com", "858.260.737-72",
-				TipoCliente.PESSOA_FISICA);
+				TipoCliente.PESSOA_FISICA.getCodigo());
 
 		Endereco ende1 = new Endereco(null, "Av. Jerônimo Monteiro", "2551", "CASA", "29.120-002", b1, cli1, null);
 

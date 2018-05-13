@@ -48,7 +48,11 @@ public class Produto implements Serializable {
 
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "PRODUTOS_CATEGORIAS", joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName = "CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName = "CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"), inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA"))
+	@JoinTable(name = "PRODUTOS_CATEGORIAS", 
+	joinColumns = @JoinColumn(name = "CD_PRODUTO", referencedColumnName = "CD_PRODUTO", foreignKey = @ForeignKey(name = "FK_CD_PRODUTO")), 
+	inverseJoinColumns = @JoinColumn(name = "CD_CATEGORIA", referencedColumnName = "CD_CATEGORIA", foreignKey = @ForeignKey(name = "FK_CD_CATEGORIA")), 
+	foreignKey = @ForeignKey(name = "FK_CD_PRODUTO"),
+	inverseForeignKey = @ForeignKey(name = "FK_CD_CATEGORIA"))
 	private List<Categoria> categorias = new ArrayList<>();
 
 	@JsonIgnore

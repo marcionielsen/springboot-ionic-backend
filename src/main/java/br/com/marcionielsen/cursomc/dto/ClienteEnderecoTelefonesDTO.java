@@ -44,7 +44,7 @@ public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 	
 	private String nomeCidade;
 	
-	private Long estado;
+	private Long estadoId;
 	
 	private Set<String> telefones = new HashSet<>();
 	
@@ -140,12 +140,12 @@ public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 		this.nomeCidade = nomeCidade;
 	}
 
-	public Long getEstado() {
-		return estado;
+	public Long getEstadoId() {
+		return estadoId;
 	}
 
-	public void setEstado(Long estado) {
-		this.estado = estado;
+	public void setEstadoId(Long estadoId) {
+		this.estadoId = estadoId;
 	}
 
 	public Set<String> getTelefones() {

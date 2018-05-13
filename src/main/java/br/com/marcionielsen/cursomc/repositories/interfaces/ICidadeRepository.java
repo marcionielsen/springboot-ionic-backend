@@ -9,4 +9,6 @@ import br.com.marcionielsen.cursomc.domain.Cidade;
 @Repository
 public interface ICidadeRepository extends JpaRepository<Cidade, Long>, QueryByExampleExecutor<Cidade> {
 
+//	@Query("select c from Cidade c where c.nome = :nomeCidade and c.estado.id = :ufId")
+//	Optional<Cidade> findByNomeAndUF(@Param("nomeCidade") String nomeCidade, @Param("ufId") Long ufId);
 }

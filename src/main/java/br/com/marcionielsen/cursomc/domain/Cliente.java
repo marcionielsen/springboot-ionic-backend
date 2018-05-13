@@ -65,13 +65,13 @@ public class Cliente implements Serializable {
 		super();
 	}
 
-	public Cliente(Long id, String nome, String email, String cpfCnpj, TipoCliente tipo) {
+	public Cliente(Long id, String nome, String email, String cpfCnpj, Integer tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfCnpj = cpfCnpj;
-		this.tipo = tipo.getCodigo();
+		this.tipo = tipo;
 	}
 
 	public Cliente(ClienteDTO obj) {
@@ -113,12 +113,12 @@ public class Cliente implements Serializable {
 		this.cpfCnpj = cpfCnpj;
 	}
 
-	public TipoCliente getTipo() {
-		return TipoCliente.toEnum(tipo);
+	public Integer getTipo() {
+		return tipo;
 	}
 
-	public void setTipo(TipoCliente tipo) {
-		this.tipo = tipo.getCodigo();
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
 	}
 
 	public List<Endereco> getEnderecos() {
