@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -41,9 +43,14 @@ public class Fornecedor implements Serializable {
 
 	@Column(name = "DS_EMAIL_FORNECEDOR")
 	private String email;
-
-	@OneToMany(mappedBy = "fornecedor")
-	private List<Endereco> filiais = new ArrayList<>();
+	
+	@ManyToMany
+	@JoinTable(name = "FORNECEDORES_ENDERECOS", 
+	joinColumns = @JoinColumn(name = "CD_FORNECEDOR", referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_CD_FORNECEDOR_ENDERECO")), 
+	inverseJoinColumns = @JoinColumn(name = "CD_ENDERECO", referencedColumnName = "CD_ENDERECO", foreignKey = @ForeignKey(name = "FK_CD_ENDERECO_FORNECEDOR")), 
+	foreignKey = @ForeignKey(name = "FK_CD_FORNECEDOR_ENDERECO"),
+	inverseForeignKey = @ForeignKey(name = "FK_CD_ENDERECO_FORNECEDOR"))
+	private Set<Endereco> filiais = new HashSet<>();
 
 	@OneToMany(mappedBy = "fornecedorDoProduto")
 	private List<Produto> produtos = new ArrayList<>();
@@ -97,12 +104,12 @@ public class Fornecedor implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public List<Endereco> getFiliais() {
+	
+	public Set<Endereco> getFiliais() {
 		return filiais;
 	}
 
-	public void setFiliais(List<Endereco> filiais) {
+	public void setFiliais(Set<Endereco> filiais) {
 		this.filiais = filiais;
 	}
 

@@ -189,8 +189,11 @@ public class CursomcApplication implements CommandLineRunner {
 		Cliente cli1 = new Cliente(null, "Márcio Nielsen Baptista", "marcio.nielsen@gmail.com", "858.260.737-72",
 				TipoCliente.PESSOA_FISICA.getCodigo());
 
-		Endereco ende1 = new Endereco(null, "Av. Jerônimo Monteiro", "2551", "CASA", "29.120-002", b1, cli1, null);
+		Endereco ende1 = new Endereco(null, "Av. Jerônimo Monteiro", "2551", "CASA", "29.120-002", b1);
 
+		// Ligação de endereços com clientes 
+		ende1.getClientes().addAll(Arrays.asList(cli1));
+		
 		// Ligação clientes com telefones
 		cli1.getTelefones().addAll(Arrays.asList("(27) 3535-0475", "(27) 98182-7229"));
 
@@ -212,12 +215,19 @@ public class CursomcApplication implements CommandLineRunner {
 		f5.getTelefones().addAll(Arrays.asList("(27) 3535-3900", "(11) 3535-3905"));
 
 		// Endereços dos fornecedores
-		Endereco endeFornec1 = new Endereco(null, "Rua Projetada", "1", "Quadra A", "03135-020", b14, null, f1);
-		Endereco endeFornec2 = new Endereco(null, "Rua Projetada", "2", "Quadra B", "06541-035", b14, null, f2);
-		Endereco endeFornec3 = new Endereco(null, "Rua Projetada", "3", "Quadra C", "04535-005", b14, null, f3);
-		Endereco endeFornec4 = new Endereco(null, "Rua Antonio Ataide", "53", "Loja A", "29704-438", b2, null, f4);
-		Endereco endeFornec5 = new Endereco(null, "Av. Carlos Lindemberg", "S/N", "Lote A", "29908-280", b1, null, f5);
+		Endereco endeFornec1 = new Endereco(null, "Rua Projetada", "1", "Quadra A", "03135-020", b14);
+		Endereco endeFornec2 = new Endereco(null, "Rua Projetada", "2", "Quadra B", "06541-035", b14);
+		Endereco endeFornec3 = new Endereco(null, "Rua Projetada", "3", "Quadra C", "04535-005", b14);
+		Endereco endeFornec4 = new Endereco(null, "Rua Antonio Ataide", "53", "Loja A", "29704-438", b2);
+		Endereco endeFornec5 = new Endereco(null, "Av. Carlos Lindemberg", "S/N", "Lote A", "29908-280", b1);
 
+		// Ligação de endereços com fornecedores 
+		endeFornec1.getFornecedores().addAll(Arrays.asList(f1));
+		endeFornec2.getFornecedores().addAll(Arrays.asList(f2));
+		endeFornec3.getFornecedores().addAll(Arrays.asList(f3));
+		endeFornec4.getFornecedores().addAll(Arrays.asList(f4));
+		endeFornec5.getFornecedores().addAll(Arrays.asList(f5));		
+		
 		// Ligação de fornecedores com endereços
 		f1.getFiliais().addAll(Arrays.asList(endeFornec1));
 		f2.getFiliais().addAll(Arrays.asList(endeFornec2));
@@ -287,11 +297,11 @@ public class CursomcApplication implements CommandLineRunner {
 		cidadeRepo.saveAll(Arrays.asList(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
 		bairroRepo.saveAll(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14));
 
-		clienteRepo.saveAll(Arrays.asList(cli1));
 		enderecoRepo.saveAll(Arrays.asList(ende1));
+		clienteRepo.saveAll(Arrays.asList(cli1));
 
-		fornecedorRepo.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
 		enderecoRepo.saveAll(Arrays.asList(endeFornec1, endeFornec2, endeFornec3, endeFornec4, endeFornec5));
+		fornecedorRepo.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
 
 		categRepo.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, 
 				                        cat7, cat8, cat9, cat10, cat11, cat12, 

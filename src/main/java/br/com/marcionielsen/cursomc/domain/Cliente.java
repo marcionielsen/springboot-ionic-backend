@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -17,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -50,11 +51,18 @@ public class Cliente implements Serializable {
 	@Column(name = "CD_TIPO_PESSOA", nullable = false)
 	private Integer tipo;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name = "CLIENTES_ENDERECOS", 
+	joinColumns = @JoinColumn(name = "CD_CLIENTE", referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_CD_CLIENTE_ENDERECO")), 
+	inverseJoinColumns = @JoinColumn(name = "CD_ENDERECO", referencedColumnName = "CD_ENDERECO", foreignKey = @ForeignKey(name = "FK_CD_ENDERECO_CLIENTE")), 
+	foreignKey = @ForeignKey(name = "FK_CD_CLIENTE_ENDERECO"),
+	inverseForeignKey = @ForeignKey(name = "FK_CD_ENDERECO_CLIENTE"))
+	private Set<Endereco> enderecos = new HashSet<>();
 
 	@ElementCollection
-	@CollectionTable(name = "TELEFONES_CLIENTE", joinColumns = @JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE"))
+	@CollectionTable(name = "TELEFONES_CLIENTE", 
+	joinColumns = @JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE")), 
+	foreignKey = @ForeignKey(name = "FK_TELEFONES_CD_CLIENTE"))
 	private Set<String> telefones = new HashSet<>();
 
 	@JsonIgnore
@@ -121,11 +129,11 @@ public class Cliente implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public List<Endereco> getEnderecos() {
+	public Set<Endereco> getEnderecos() {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
+	public void setEnderecos(Set<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
 

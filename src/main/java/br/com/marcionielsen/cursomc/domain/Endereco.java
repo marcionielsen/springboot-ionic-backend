@@ -1,6 +1,8 @@
 package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -17,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "ENDERECOS", indexes = { @Index(name = "IDX_CD_CEP", columnList = "CD_CEP", unique = false),
-		@Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP, CD_CLIENTE, CD_FORNECEDOR", unique = true) })
+		@Index(name = "UK_ENDERECO_UNICO", columnList = "NM_LOGRADOURO, NM_ENDERECO, DS_COMPLEMENTO, CD_CEP, CD_BAIRRO", unique = true) })
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -43,21 +46,27 @@ public class Endereco implements Serializable {
 	private Bairro bairro;
 
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
-	private Cliente cliente;
+	@ManyToMany(mappedBy="enderecos")
+	private List<Cliente> clientes = new ArrayList<>();
 
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "CD_FORNECEDOR", nullable = true, referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_FORNECEDOR"))
-	private Fornecedor fornecedor;
+	@ManyToMany(mappedBy="filiais")
+	private List<Fornecedor> fornecedores = new ArrayList<>();
 
+//	@ManyToOne
+//	@JoinColumn(name = "CD_CLIENTE", nullable = true, referencedColumnName = "CD_CLIENTE", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_CLIENTE"))
+//	private Cliente cliente;
+
+//	@ManyToOne
+//	@JoinColumn(name = "CD_FORNECEDOR", nullable = true, referencedColumnName = "CD_FORNECEDOR", foreignKey = @ForeignKey(name = "FK_ENDERECOS_CD_FORNECEDOR"))
+//	private Fornecedor fornecedor;
+
+	
 	public Endereco() {
 		super();
 	}
 
-	public Endereco(Long id, String logradouro, String numero, String complemento, String cep, Bairro bairro,
-			Cliente cliente, Fornecedor fornecedor) {
+	public Endereco(Long id, String logradouro, String numero, String complemento, String cep, Bairro bairro) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -65,8 +74,6 @@ public class Endereco implements Serializable {
 		this.complemento = complemento;
 		this.cep = cep;
 		this.bairro = bairro;
-		this.cliente = cliente;
-		this.fornecedor = fornecedor;
 	}
 
 	public Long getId() {
@@ -117,20 +124,20 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public List<Cliente> getClientes() {
+		return clientes;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
 	}
 
-	public Fornecedor getFornecedor() {
-		return fornecedor;
+	public List<Fornecedor> getFornecedores() {
+		return fornecedores;
 	}
 
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
+	public void setFornecedores(List<Fornecedor> fornecedores) {
+		this.fornecedores = fornecedores;
 	}
 
 	@Override
@@ -166,8 +173,7 @@ public class Endereco implements Serializable {
 	@Override
 	public String toString() {
 		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
-				+ complemento + ", cep=" + cep + ", bairro=" + bairro + ", cliente=" + cliente + ", fornecedor="
-				+ fornecedor + "]";
+				+ complemento + ", cep=" + cep + ", bairro=" + bairro + "]";
 	}
 
 }

@@ -3,6 +3,7 @@ package br.com.marcionielsen.cursomc.services;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -88,10 +89,42 @@ public class ClienteService {
 	}
 
 	public void delete(Long id) {
-		findById(id);
+		Cliente cliente = this.findById(id);
 
 		try {
+			Set<Endereco> enderecos = cliente.getEnderecos();            ///        cd_endereco = 1 | cd_cliente = null
+			                                                             ///        cd_endereco = 1 | cd_cliente = 1
+			
+			for (Endereco endereco : enderecos) {
+				
+				List<Cliente> lista = endereco.getClientes();
+				
+				for (Cliente cli : lista) {
+					if (cliente.equals(cli)) {
+						int idx = lista.indexOf(cli);
+						lista.set(idx, null);
+					}
+				}
+				
+				endereco.getClientes().addAll(lista);
+				
+				if ( endereco.getClientes().size() > 0 ) {
+					
+					????????????????????
+					
+					repoEndereco.save(endereco);
+				} else {
+					repoEndereco.deleteById(endereco.getId());
+				}
+				
+				if (cliente.getEnderecos().size() > 0) {
+					
+					
+				}
+			}
+			
 			repo.deleteById(id);
+			
 		} catch (DataIntegrityViolationException e) {
 			throw new IntegridadeDadosException(id.toString(), Cliente.class.getName());
 		}
@@ -203,7 +236,7 @@ public class ClienteService {
 
 		System.out.println("    -->> Executando pesquisa no H2DB --> logradouro: " + obj.getLogradouro() + " - numero: " + obj.getNumero() + " - cep: " + obj.getCep());
 		Endereco ende = repoEndereco.findOne(exEndereco).orElse(new Endereco(null, obj.getLogradouro(), obj.getNumero(),
-				obj.getComplemento(), obj.getCep(), bairro, cli, null));
+				obj.getComplemento(), obj.getCep(), bairro));
 
 //				.orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getLogradouro() + " - " + obj.getNumero() + " - " + obj.getCep(),
 //				 Endereco.class.getName()));
@@ -215,7 +248,7 @@ public class ClienteService {
 		// obj.getComplemento(), obj.getCep(),
 		// bairro, cli, null));
 
-		ende.setCliente(cli);
+		ende.getClientes().addAll(Arrays.asList(cli));
 		
 		System.out.println("\nENDERECO = " + 
 		                   "\n - logradouro: " + ende.getLogradouro() +
@@ -231,6 +264,7 @@ public class ClienteService {
 		System.out.println("\n");
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(">>-->> Ligando o Endereço ao Cliente");
+		
 		// Ligando o Endereço ao Cliente
 		cli.getEnderecos().addAll(Arrays.asList(ende));
 
@@ -238,6 +272,7 @@ public class ClienteService {
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(
 				">>-->> Limpando o Set Original de Telefones (eliminando valores NULOS) e ligando os telefones ao Cliente");
+		
 		// Limpando o Set Original de Telefones (eliminando valores NULOS) e ligando os
 		// telefones ao Cliente
 		obj.getTelefones().stream().filter(telefoneOri -> telefoneOri != null && !"".equals(telefoneOri))
