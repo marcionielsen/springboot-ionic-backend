@@ -326,7 +326,6 @@ public class ClienteService {
 
 		System.out.println("    -->> Executando pesquisa no H2DB --> logradouro: " + obj.getLogradouro() + " - numero: " + obj.getNumero() + " - cep: " + obj.getCep());
 		Endereco ende = repoEndereco.findOne(exEndereco).orElse(new Endereco(null, obj.getLogradouro(), obj.getNumero(),
-				obj.getComplemento(), obj.getCep(), bairro, cli, null));
 
 //				.orElseThrow(() -> new ObjetoNaoEncontradoException(obj.getLogradouro() + " - " + obj.getNumero() + " - " + obj.getCep(),
 //				 Endereco.class.getName()));
@@ -338,7 +337,7 @@ public class ClienteService {
 		// obj.getComplemento(), obj.getCep(),
 		// bairro, cli, null));
 
-		ende.setCliente(cli);
+		ende.getClientes().addAll(Arrays.asList(cli));
 		
 		System.out.println("\nENDERECO = " + 
 		                   "\n - logradouro: " + ende.getLogradouro() +
@@ -354,6 +353,7 @@ public class ClienteService {
 		System.out.println("\n");
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(">>-->> Ligando o Endereço ao Cliente");
+		
 		// Ligando o Endereço ao Cliente
 		cli.getEnderecos().addAll(Arrays.asList(ende));
 
