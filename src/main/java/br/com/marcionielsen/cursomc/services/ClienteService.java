@@ -237,6 +237,7 @@ public class ClienteService {
 
 		System.out.println("    -->> Executando pesquisa no H2DB --> nomeBairro: " + obj.getNomeBairro()
 				+ " - cidadeId: " + cidade.getId());
+		System.out.println("//--------------------------------------");
 		Bairro bairro = repoBairro.findOne(exBairro).orElse(new Bairro(null, obj.getNomeBairro(), cidade));
 
 		// findByNomeAndCidadeId(obj.getNomeBairro(), cidade.getId())
