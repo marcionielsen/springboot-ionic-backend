@@ -9,10 +9,12 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.marcionielsen.cursomc.services.validation.annotations.ClienteInsertValid;
+import br.com.marcionielsen.cursomc.services.validation.annotations.ClienteUpdateValid;
 import br.com.marcionielsen.cursomc.services.validation.annotations.IsCpfCnpjValid;
 
 @IsCpfCnpjValid
 @ClienteInsertValid
+@ClienteUpdateValid
 public class ClienteEnderecoTelefonesDTO extends AbstrataDTO {
 	private static final long serialVersionUID = 1L;
 
