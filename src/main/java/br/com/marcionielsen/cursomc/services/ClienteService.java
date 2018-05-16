@@ -67,62 +67,97 @@ public class ClienteService {
 	}
 
 	public Cliente insert(ClienteEnderecoTelefonesDTO obj) {
+		System.out.println("//============================================================================");
+		System.out.println(">> Inserindo os dados do Cliente e os dados de seus Endereços << ");
+		System.out.println("//----------------------------------------------------------------------------");
+		System.out.println(">>-->> Carregando e salvando os dados do Cliente");
 
 		Cliente newObj = repo.save(fromDTO(obj));
+		System.out.println("//--------------------------------------");
+		System.out.println(">>-->> Salvando os dados dos Endereços do Cliente!");
+		System.out.println("//--------------------------------------");
 
 		repoEndereco.saveAll(newObj.getEnderecos());
 
+		System.out.println(">>-->> Retornando o Novo Cliente!");
+		System.out.println("//--------------------------------------");
 		return newObj;
 	}
 
 	public Cliente update(ClienteEnderecoTelefonesDTO obj) {
+		System.out.println("//============================================================================");
+		System.out.println(">> Atualizando os dados do Cliente e os dados de seus Endereços << ");
+		System.out.println("//----------------------------------------------------------------------------");
+		System.out.println(">>-->> Obtendo o Cliente");
+		Cliente cliente = this.findById(obj.getId());
 
-		Cliente newObj = this.findById(obj.getId());
+		System.out.println("\n>>-->> CLIENTE = " + cliente.getId().toString() + " - " + cliente.getNome());
+		System.out.println("\n>>-->> Atualizando os dados do Cliente");
+		System.out.println("//--------------------------------------");
+		updateData(cliente, fromDTO(obj));
 
-		updateData(newObj, fromDTO(obj));
+		System.out.println(">>-->> Salvando os dados atualizados!");
+		System.out.println("//--------------------------------------");
+		Cliente saveObj = repo.save(cliente);
 
-		Cliente saveObj = repo.save(newObj);
-
+		System.out.println(">>-->> Salvando a lista de endereços!");
+		System.out.println("//--------------------------------------");
 		repoEndereco.saveAll(saveObj.getEnderecos());
 
+		System.out.println(">>-->> Retornando o Cliente Atualizado!");
+		System.out.println("//--------------------------------------");
 		return saveObj;
 	}
 
 	public void delete(Long id) {
+		System.out.println("//============================================================================");
+		System.out.println(">> Removendo Cliente e seus Endereços << ");
+		System.out.println("//----------------------------------------------------------------------------");
+		System.out.println(">>-->> Obtendo o Cliente");
 		Cliente cliente = this.findById(id);
 
+		System.out.println("\n>>-->> CLIENTE = " + cliente.getId().toString() + " - " + cliente.getNome());
+		System.out.println(">>-->> Obtendo os Endereços do Cliente");
+		System.out.println("//--------------------------------------");
 		try {
-			Set<Endereco> enderecos = cliente.getEnderecos();            ///        cd_endereco = 1 | cd_cliente = null
-			                                                             ///        cd_endereco = 1 | cd_cliente = 1
-			
+			Set<Endereco> enderecos = cliente.getEnderecos();  
+			                                                   
 			for (Endereco endereco : enderecos) {
+				System.out.println(">>-->> ENDERECO = " + endereco.getId().toString() + " - " + 
+			                                              endereco.getLogradouro() + " - " +
+						                                  endereco.getNumero() + " - " + 
+			                                              endereco.getComplemento() + " - " + 
+			                                              endereco.getCep() + " - " + 
+			                                              endereco.getBairro().getNome() + " - " + 
+			                                              endereco.getBairro().getCidade().getNome() + " - " + 
+			                                              endereco.getBairro().getCidade().getEstado().getSigla() );
 				
-				List<Cliente> lista = endereco.getClientes();
-				
-				for (Cliente cli : lista) {
-					if (cliente.equals(cli)) {
-						int idx = lista.indexOf(cli);
-						lista.set(idx, null);
-					}
-				}
-				
-				endereco.getClientes().addAll(lista);
+				System.out.println("//--------------------------------------");
+				System.out.println(">>-->> Removendo a ligação entre o Cliente e o Endereço");
+				System.out.println("//--------------------------------------");
+				endereco.getClientes().remove(cliente);
+
+				System.out.println("//--------------------------------------");
+				System.out.println(">>-->> Removendo a ligação entre o Endereço e o Cliente");
+				System.out.println("//--------------------------------------");
+				cliente.getEnderecos().remove(endereco);
 				
 				if ( endereco.getClientes().size() > 0 ) {
-					
-					????????????????????
-					
+					System.out.println("//--------------------------------------");
+					System.out.println(">>-->> Salvando o Endereço. Há Clientes vinculados ao endereço!");
+					System.out.println("//--------------------------------------");
 					repoEndereco.save(endereco);
 				} else {
+					System.out.println("//--------------------------------------");
+					System.out.println(">>-->> Removendo o Endereço. Não há Clientes vinculados ao endereço!");
+					System.out.println("//--------------------------------------");
 					repoEndereco.deleteById(endereco.getId());
-				}
-				
-				if (cliente.getEnderecos().size() > 0) {
-					
-					
-				}
+				}				
 			}
 			
+			System.out.println("//--------------------------------------");
+			System.out.println(">>-->> Removendo o Cliente. Não há Endereços vinculados!");
+			System.out.println("//--------------------------------------");
 			repo.deleteById(id);
 			
 		} catch (DataIntegrityViolationException e) {
@@ -145,15 +180,19 @@ public class ClienteService {
 		// Criando o Cliente
 		Cliente cli = new Cliente(obj.getId(), obj.getNome(), obj.getEmail(), obj.getCpfCnpj(), obj.getTipo());
 
+		System.out.println("//--------------------------------------");
 		System.out.println("\n>> Obtendo o UF");
+		System.out.println("//--------------------------------------");
 		// Obtendo o UF, a Cidade e o Bairro
 		Estado uf = repoUF.findById(obj.getEstadoId()).orElseThrow(
 				() -> new ObjetoNaoEncontradoException(obj.getEstadoId().toString(), Estado.class.getName()));
 
 		System.out.println("\nUF = " + uf.getId().toString() + " - " + uf.getNome() + " - " + uf.getSigla());
 
+		System.out.println("//--------------------------------------");
 		System.out.println("\n>>-->> Obtendo a Cidade");
 		System.out.println(" -->> Criando o filtro");
+		System.out.println("//--------------------------------------");
 
 		Cidade cidex = new Cidade();
 		cidex.setEstado(uf);
@@ -165,8 +204,10 @@ public class ClienteService {
 
 		Example<Cidade> exCidade = Example.of(cidex, exmtCidade);
 
+		System.out.println("//--------------------------------------");
 		System.out.println("    -->> Executando pesquisa no H2DB --> nomeCidade: " + obj.getNomeCidade() + " - ufId: "
 				+ uf.getId());
+		System.out.println("//--------------------------------------");
 		Cidade cidade = repoCidade.findOne(exCidade).orElse(new Cidade(null, obj.getNomeCidade(), uf));
 
 		// findByNomeAndUF(obj.getNomeCidade(), uf.getId())
@@ -179,8 +220,10 @@ public class ClienteService {
 		System.out.println("\nCIDADE = " + cidade.getId().toString() + " - " + cidade.getNome() + " - "
 				+ cidade.getEstado().getSigla());
 
+		System.out.println("//--------------------------------------");
 		System.out.println("\n>>-->> Obtendo o Bairro");
 		System.out.println(" -->> Criando o filtro");
+		System.out.println("//--------------------------------------");
 
 		Bairro bairex = new Bairro();
 		bairex.setCidade(cidade);
@@ -194,6 +237,7 @@ public class ClienteService {
 
 		System.out.println("    -->> Executando pesquisa no H2DB --> nomeBairro: " + obj.getNomeBairro()
 				+ " - cidadeId: " + cidade.getId());
+		System.out.println("//--------------------------------------");
 		Bairro bairro = repoBairro.findOne(exBairro).orElse(new Bairro(null, obj.getNomeBairro(), cidade));
 
 		// findByNomeAndCidadeId(obj.getNomeBairro(), cidade.getId())
@@ -205,6 +249,7 @@ public class ClienteService {
 		System.out.println("\n");
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(">>-->> Ligando a Cidade ao UF");
+		System.out.println("//--------------------------------------");
 		// Ligando a Cidade ao UF
 		uf.getCidades().addAll(Arrays.asList(cidade));
 
@@ -215,6 +260,7 @@ public class ClienteService {
 		System.out.println("//----------------------------------------------------------------------------");
 		System.out.println(">>-->> Criando/Obtendo o Endereço do Cliente");
 		System.out.println(" -->> Criando o filtro");
+		System.out.println("//--------------------------------------");
 
 		// Criando o Endereço do Cliente
 		Endereco endex = new Endereco();
@@ -250,6 +296,7 @@ public class ClienteService {
 
 		ende.getClientes().addAll(Arrays.asList(cli));
 		
+		System.out.println("//--------------------------------------");
 		System.out.println("\nENDERECO = " + 
 		                   "\n - logradouro: " + ende.getLogradouro() +
 				           "\n - numero: " + ende.getNumero() +
@@ -285,7 +332,6 @@ public class ClienteService {
 	}
 
 	public Cliente fromEntity(Cliente Obj) {
-
 		return Obj;
 	}
 
