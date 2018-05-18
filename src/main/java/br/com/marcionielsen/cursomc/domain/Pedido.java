@@ -1,6 +1,7 @@
 package br.com.marcionielsen.cursomc.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.marcionielsen.cursomc.util.Moeda;
 import br.com.marcionielsen.cursomc.util.Util;
 
 @Entity
@@ -108,6 +111,34 @@ public class Pedido implements Serializable {
 
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
+	}
+	
+	@JsonIgnore
+	public BigDecimal getValorTotal() {
+		System.out.println("//=================================================================================");
+		System.out.println(">> Itens do Pedido");
+		System.out.println("//---------------------------------------------------------------------------------");
+		
+		for (ItemPedido itemPedido : this.itens) {
+			System.out.println(">> Item: " + itemPedido.getId().getProduto().getDescricao() + " - " + 
+		                                     itemPedido.getQuantidade().toString() + " - " + 
+					                         itemPedido.getPreco().toString() + " - " + 
+		                                     itemPedido.getSubTotal().toString());     
+		}
+		
+		BigDecimal total = this.itens.stream()
+				.map(ItemPedido::getSubTotal)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+				
+		System.out.println("//=================================================================================");
+		System.out.println(">> Valor Total do Pedido: " + total.toString());
+		System.out.println("//=================================================================================");
+		
+		return total;
+	}
+	
+	public String getValorTotalPedido() {
+		return Moeda.mascaraDinheiro(this.getValorTotal(), Moeda.DINHEIRO_REAL);
 	}
 	
 	@Override

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.marcionielsen.cursomc.util.Util;
+import br.com.marcionielsen.cursomc.util.Moeda;
 
 @Entity
 @Table(name = "ITEM_PEDIDOS")
@@ -84,6 +84,15 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 
+	@JsonIgnore
+	public BigDecimal getSubTotal() {
+		return this.preco.subtract(this.desconto).multiply(new BigDecimal(this.quantidade.intValue()));
+	}
+	
+	public String getValorSubTotal() {
+		return Moeda.mascaraDinheiro(this.getSubTotal(), Moeda.DINHEIRO_REAL);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,7 +127,8 @@ public class ItemPedido implements Serializable {
 	public String toString() {
 		return "ItemPedido [ itemPedidoPK = [pedido=" + id.getPedido().toString() + ", produto="
 				+ id.getProduto().toString() + "] , quantidade=" + quantidade + ", desconto="
-				+ Util.formatoMoeda(desconto) + ", preco=" + Util.formatoMoeda(preco) + "]";
+				+ Moeda.mascaraDinheiro(desconto, Moeda.DINHEIRO_REAL) + ", preco=" 
+				+ Moeda.mascaraDinheiro(preco, Moeda.DINHEIRO_REAL) + "]";
 	}
 
 }

@@ -1,7 +1,5 @@
 package br.com.marcionielsen.cursomc.util;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,12 +20,6 @@ public class Util {
 
 		return LocalDateTime.ofInstant(data, ZoneId.systemDefault())
 				.format(DateTimeFormatter.ofPattern(FORMATO_TIME_STAMP));
-	}
-
-	public static String formatoMoeda(BigDecimal valor) {
-		DecimalFormat df = new DecimalFormat("¤ #,###,##0.00");
-
-		return df.format(valor);
 	}
 
 	public static String removerElementoURI(String strOri, String paramRemove) {

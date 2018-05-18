@@ -23,7 +23,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.marcionielsen.cursomc.util.Util;
+import br.com.marcionielsen.cursomc.util.Moeda;
 
 @Entity
 @Table(name = "PRODUTOS", indexes = { @Index(name = "UK_DS_PRODUTO", columnList = "DS_PRODUTO", unique = true) })
@@ -162,7 +162,7 @@ public class Produto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + Util.formatoMoeda(precoCusto)
+		return "Produto [id=" + id + ", descricao=" + descricao + ", precoCusto=" + Moeda.mascaraDinheiro(precoCusto, Moeda.DINHEIRO_REAL)
 				+ ", fornecedorDoProduto=" + fornecedorDoProduto + ", categorias=" + categorias + ", itens=" + itens + "]";
 	}
 

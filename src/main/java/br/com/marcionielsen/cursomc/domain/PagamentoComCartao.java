@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import br.com.marcionielsen.cursomc.domain.enums.BandeiraCartao;
-import br.com.marcionielsen.cursomc.util.Util;
+import br.com.marcionielsen.cursomc.util.Moeda;
 
 @Entity
 public class PagamentoComCartao extends Pagamento {
@@ -64,7 +64,7 @@ public class PagamentoComCartao extends Pagamento {
 	@Override
 	public String toString() {
 		return "PagamentoComCartao [ " + super.toString() + ", numeroParcelas=" + numeroParcelas + ", valorParcela="
-				+ Util.formatoMoeda(valorParcela) + ", bandeiraCartao="
+				+ Moeda.mascaraDinheiro(valorParcela, Moeda.DINHEIRO_REAL) + ", bandeiraCartao="
 				+ BandeiraCartao.toEnum(bandeiraCartao).getDescricao() + "]";
 	}
 

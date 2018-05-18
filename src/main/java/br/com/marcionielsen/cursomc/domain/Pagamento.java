@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.marcionielsen.cursomc.domain.enums.EstadoPagamento;
+import br.com.marcionielsen.cursomc.util.Moeda;
 import br.com.marcionielsen.cursomc.util.Util;
 
 @Entity
@@ -187,9 +188,10 @@ public abstract class Pagamento implements Serializable {
 	public String toString() {
 		
 		return "Pagamento [id=" + id + ", estadoPagamento=" + EstadoPagamento.toEnum(estadoPagamento).getDescricao()
-				+ ", dataPagamento=" + Util.formatoDataHora(dataPagamento.toInstant()) + ", valorFatura=" + Util.formatoMoeda(valorFatura)
-				+ ", valorDesconto=" + Util.formatoMoeda(valorDesconto) + ", valorJuros=" + Util.formatoMoeda(valorJuros) 
-				+ ", valorMora=" + Util.formatoMoeda(valorMora) + ", valorMulta=" + Util.formatoMoeda(valorMulta) + ", pedido=" + pedido + "]";
+				+ ", dataPagamento=" + Util.formatoDataHora(dataPagamento.toInstant()) + ", valorFatura=" + Moeda.mascaraDinheiro(valorFatura, Moeda.DINHEIRO_REAL)
+				+ ", valorDesconto=" + Moeda.mascaraDinheiro(valorDesconto, Moeda.DINHEIRO_REAL) + ", valorJuros=" + Moeda.mascaraDinheiro(valorJuros, Moeda.DINHEIRO_REAL) 
+				+ ", valorMora=" + Moeda.mascaraDinheiro(valorMora, Moeda.DINHEIRO_REAL) + ", valorMulta=" + Moeda.mascaraDinheiro(valorMulta, Moeda.DINHEIRO_REAL) 
+				+ ", pedido=" + pedido + "]";
 	}
 
 }
